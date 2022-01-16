@@ -1,15 +1,33 @@
 <template>
   <div class="header">
     <a href="#">
-      <img class="logo" src="@/assets/images/logo4.png" />
+      <img class="logo" src="@/assets/bohe_images/1.png" />
     </a>
-    <ul class="nav">
-      <li><a href="#">首页</a></li>
+
+    <div class="nav">
+      <el-menu
+        mode="horizontal"
+        :default-active="activeIndex"
+        class="el-menu-demo"
+      >
+        <template v-for="item in navList">
+          <el-menu-item :index="item.index" :key="item.index" >
+            <span @click="changeNav(item.path, item.index)">{{
+              item.name
+            }}</span>
+          </el-menu-item>
+        </template>
+      </el-menu>
+    </div>
+    <!--
+     <ul class="nav">
       <li>
-        <a @click="goTest" style="cursor: pointer"> 新闻中心 </a>
+        <a @click="goTest" style="cursor: pointer"> 健康菜谱 </a>
       </li>
       <li><a @click="goAbout">在线预约</a></li>
-      <li><a href="https://yhy.imut.cloud">可视大屏</a></li>
+      <li><a @click="goAbout"> 食物</a></li>
+      <li><a @click="goAbout">在线预约</a></li>
+     <li><a href="https://yhy.imut.cloud">可视大屏</a></li>
       <li>
         <a @click="goData"> 用户数据 </a>
         <div class="down">
@@ -29,28 +47,74 @@
             </div>
           </div>
         </div>
-      </li>
+      </li> 
+      
     </ul>
+    -->
     <div class="tel">
-      <p>云计算中心<span>lvguowei2024@163.com</span></p>
+      <p>云计算中心<span @click="handleLogin">用户登录</span></p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: "recipes",
+  data() {
+    return {
+      //默认选中菜单
+      activeIndex: "1",
+      navList: [
+        {
+          index: "1",
+          name: "首页",
+          path: "/recipes",
+        },
+        {
+          index: "2",
+          name: "健康菜谱",
+          path: "/menus",
+        },
+        {
+          index: "3",
+          name: "食物热量",
+          path: "/calorie",
+        },
+        {
+          index: "4",
+          name: "个人中心",
+          path: "/owndetail",
+        },
+      ],
+    };
+  },
   methods: {
-    goTest () {
-      this.$router.push('/News')
+    /**
+     * 切换菜单栏
+     */
+    changeNav(path, i) {
+      this.activeIndex = i;
+      console.log(i, path);
+      this.$router.push(path);
     },
-    goData () {
-      this.$router.push('/data')
+    /**
+     * 用户登录页面跳转
+     */
+    handleLogin(){
+       this.$router.push("/login");
     },
-    goAbout(){
-      this.$router.push('/about')
-    }
-  }
-}
+    
+    goTest() {
+      this.$router.push("/News");
+    },
+    goData() {
+      this.$router.push("/data");
+    },
+    goAbout() {
+      this.$router.push("/about");
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -59,6 +123,10 @@ export default {
   padding: 0;
   list-style: none;
   text-decoration: none;
+}
+.active{
+   border-bottom: 2px solid #009688;
+  color: #009688;
 }
 .header {
   width: 1160px;
@@ -74,7 +142,22 @@ export default {
     float: left;
     margin-left: 100px;
     margin-top: 5px;
-    li {
+    .el-menu.el-menu--horizontal{
+      border-bottom: none;
+    }
+    .el-menu--horizontal>.el-menu-item.is-active{
+      border-bottom: 2px solid #009688;
+      color: #009688;
+      transition: 2s;
+    }
+    .el-menu{
+      .el-menu-item{
+        font-size: 20px;
+        margin-left: 30px;
+      }
+     
+    }
+    /* li {
       float: left;
       position: relative;
       &:hover {
@@ -130,12 +213,13 @@ export default {
           }
         }
       }
-    }
+    } */
   }
   .tel {
     float: right;
     text-align: right;
     margin-top: 22px;
+    cursor: pointer;
     p {
       font-size: 14px;
       color: #666;

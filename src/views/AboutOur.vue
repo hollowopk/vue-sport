@@ -1,6 +1,5 @@
 <template>
   <div class="box">
-    <hd-view />
     <div class="search">
       <div class="title">
         <h2>超过10万种食谱数据</h2>
@@ -78,12 +77,12 @@
   </div>
 </template>
 <script>
-import HdView from "../components/HdView.vue";
+
 export default {
   methods: {
     search() {},
   },
-  components: { HdView },
+  components: {  },
   data() {
     return {
       picUrl: [
