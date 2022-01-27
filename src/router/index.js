@@ -6,6 +6,11 @@ import Menus from '../views/Menus'
 import Calorie from '../views/Calorie'
 import OwnDetail from '../views/OwnDetail'
 
+import OwnMessage from '../views/OwnMessage'
+import PrefMessage from '../views/OwnMessage/PrefMessage'
+import ChanMessage from '../views/OwnMessage/ChanMessage'
+import FindMessage from '../views/OwnMessage/FindMessage'
+
 import Login from '../views/Login'
 Vue.use(VueRouter)
 
@@ -36,18 +41,48 @@ const routes = [
         name:'owndetail',
         component:OwnDetail
       },
+      {
+        path:'/login',
+        name:'login',
+        component:Login
+      },
+     
     ]
   },
-
   {
-    path:'/login',
-    name:'login',
-    component:Login
-  },
+    path:'/ownmessage',
+    name:'ownmessage',
+    component:OwnMessage,
+    redirect:'/ownmessage/prefmessage',
+    children:[
+      {
+        path:'prefmessage',
+        name:'prefmessage',
+        component:PrefMessage
+      },
+      {
+        path:'chanmessage',
+        name:'chanmessage',
+        component:ChanMessage
+      },
+      {
+        path:'findmessage',
+        name:'findmessage',
+        component:FindMessage
+      }
+    ]
+  }
+
+ 
 ]
+
 
 const router = new VueRouter({
   routes
 })
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default router

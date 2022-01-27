@@ -1,3 +1,4 @@
+
 /**
  * 网络请求：Axios
  */
@@ -46,7 +47,8 @@
  })
  
  // 全局配置
- instance.defaults.baseUrl = "http://localhost:8080";
+ instance.defaults.baseUrl = "http://localhost:8000";
+ // instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
  instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
  
  // 创建请求拦截和响应拦截操作
@@ -56,16 +58,16 @@
              config.data = qs.stringify(config.data);
          }
          // 判断token是否存在，存在则携带，通过请求头
-         const token = store.state.LoginModule.token;
-         if(token){
-             config.headers.authorization = token;
-         }
+      //   const token = store.state.LoginModule.token;
+        // if(token){
+          //   config.headers.authorization = token;
+        // }
          return config;
      },
      error => Promise.reject(error)
  )
  
-
+ // review自己的代码，也要不断的review的情感世界
  
  instance.interceptors.response.use(
      // 成功 
@@ -73,7 +75,13 @@
       * 成功和失败的判断：
       *  1.请求成功和请求失败
       *  2.请求成功：结果的成功和结果的失败
-   
+      * 
+      * 真正好的代码：
+      *  1.可读性高
+      *  2.可维护性强
+      * 
+      * 不是流水账的代码！！！
+      * 面向对象的思维方式：OOP
       */
      response => response.status === 200 ? Promise.resolve(response) : Promise.reject(response),
      // 我们自己封装的，所以为了代码的清晰可读性，我们需要增Promise
@@ -96,3 +104,56 @@
  )
  
  export default instance;
+
+/*
+import axios from "axios";
+import router from "../router";
+
+axios.defaults.baseURL = "http://localhost:8000"
+
+const request = axios.create({
+	timeout: 5000,
+	headers: {
+		'Content-Type': "application/json; charset=utf-8"
+	}
+})
+
+request.interceptors.request.use(config => {
+	config.headers['Authorization'] = localStorage.getItem("token")
+	return config
+})
+
+request.interceptors.response.use(
+	response => {
+
+		console.log("response ->" + response)
+
+		let res = response.data
+
+		if (res.code === 200) {
+			return response
+		} else {
+		//	Element.Message.error(!res.msg ? '系统异常' : res.msg)
+        console.log(!res.msg ? '系统异常' : res.msg);
+			return Promise.reject(response.data.msg)
+		}
+	},
+	error => {
+
+		console.log(error)
+
+		if (error.response.data) {
+			error.massage = error.response.data.msg
+		}
+
+		if (error.response.status === 401) {
+			router.push("/login")
+		}
+        console.log(error.massage, {duration: 3000});
+		//Element.Message.error(error.massage, {duration: 3000})
+		return Promise.reject(error)
+	}
+)
+
+export default request
+*/
