@@ -36,6 +36,7 @@
             v-model="prefData.birthday"
             value-format="yyyy-MM-dd"
             style="width: 100%"
+            @change="changeDate"
           ></el-date-picker>
         </el-form-item>
 
@@ -54,12 +55,20 @@
             @keyup.enter.native="handelTab(2, $event)"
           ></el-input>
         </el-form-item>
+        
+        <el-form-item label="年龄" prop="age">
+          <el-input
+            v-model="prefData.age"
+            ref="input3"
+            @keyup.enter.native="handelTab(3, $event)"
+          ></el-input>
+        </el-form-item>
 
         <el-form-item label="电话号码" prop="phone">
           <el-input
             v-model="prefData.phone"
-            ref="input3"
-            @keyup.enter.native="handelTab(3, $event)"
+            ref="input4"
+            @keyup.enter.native="handelTab(4, $event)"
           ></el-input>
         </el-form-item>
 
@@ -111,6 +120,7 @@ export default {
         birthday: "",
         email: "",
         name: "",
+        age:"",
         phone: "",
         sex: "",
       },
@@ -137,6 +147,7 @@ export default {
           },
         ],
         name: [{ required: true, message: "请输入名称", trigger: "blur" }],
+        age: [{ required: true, message: "请输入年龄", trigger: "blur" }],
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
         sex: [{ required: true, message: "请选择性别", trigger: "blur" }],
       },
@@ -155,8 +166,8 @@ export default {
   },
   mounted() {
     let obj = JSON.parse(sessionStorage.getItem("userMessage"));
-    const { avatar, birthday, email, name, password, phone, sex } = obj;
-    this.prefData = { avatar, birthday, email, name, password, phone, sex };
+    const { avatar, birthday, email, name, password, phone, sex,version:age } = obj;
+    this.prefData = { avatar, birthday, email, name, password, phone, sex ,age};
     this.judgeMessage();
   },
   methods: {
@@ -179,6 +190,15 @@ export default {
           });
       }
     },
+      /**
+     * 根据出生日期自动获得年龄
+     */
+    changeDate(e){
+     var date = new Date();
+     var year = date.getFullYear();
+     var ayear = e.substring(0,4);
+     this.prefData.age = year - Number(ayear);
+    },
     /**
      * 完善信息
      */
@@ -195,6 +215,7 @@ export default {
               sex: Number(this.prefData.sex),
               email: this.prefData.email,
               phone: this.prefData.phone,
+              age:Number(this.prefData.age)
             })
             .then((res) => {
               if (res.status === 200 && res.data.msg === "处理成功！") {
@@ -227,7 +248,7 @@ export default {
      */
     handelTab(i, e) {
       let that = this;
-      if (i <= 2 && that.$refs["input" + i]) {
+      if (i <= 3 && that.$refs["input" + i]) {
         that.$nextTick(() => {
           e.target.blur();
           let index = i + 1;
@@ -237,12 +258,13 @@ export default {
     },
 
     resetForm() {
-      this.$refs.prefData.resetFields();
+      this.$refs.prefData.resetFields(file);
+      console.log("2222",file);
     },
     handleChange(file, fileList) {
-      console.log("文件路径1",URL.createObjectURL(file.raw));
-       console.log("文件路径2",file.raw);
-      this.prefData.avatar = URL.createObjectURL(file.raw);
+      console.log("111",file.name);
+     // this.prefData.avatar = URL.createObjectURL(file.raw);
+     this.prefData.avatar = file.name;
     },
 
     beforeUpload(file) {

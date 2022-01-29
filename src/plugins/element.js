@@ -3,7 +3,8 @@ import { Button ,Menu,MenuItem,Card,Form,FormItem,Input,Carousel,
     CarouselItem,Row,Col,Dialog,Avatar,Dropdown,
     DropdownMenu,DropdownItem,Message,
     Breadcrumb,BreadcrumbItem,Divider,DatePicker,
-    Upload,Select,Option,PageHeader} from 'element-ui'
+    Upload,Select,Option,PageHeader,Loading,Progress,Notification,
+    Steps,Step,Pagination} from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Menu)
@@ -29,4 +30,10 @@ Vue.use(Upload)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(PageHeader)
+Vue.use(Loading)
+Vue.use(Progress)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(Pagination)
+Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message ;

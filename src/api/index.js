@@ -50,22 +50,37 @@ const api ={
 
     /**
      * 完善个人信息
-     * http://localhost:8000/changeData/https://img2.baidu.com/it/u=3133556706,4251837595&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500
-     * /zhangsan/2022-01-15%2000:00:00/1/1745251097@qq.com/1745251097
+     *
      */
     updateUserMessage(params){
       return axios.get(base.baseUrl + base.prefUserMessage +`/${params.avatar}`
       +`/${params.name}` + `/${params.birthday}` + `/${params.sex}` 
       + `/${params.email}` 
-      + `/${params.phone}`);
+      + `/${params.phone}`
+      + `/${params.age}`);
     },
 
     /**
-     * 修改用户名
+     * 修改用户密码
      */
     changePwd(params){
       return axios.get(base.baseUrl + base.changePwd + `/${params.oldPwd}`
       +`/${params.newPwd}`  );
+    },
+
+    /**
+     * 食谱
+     */
+    getRecipe(params){
+      return axios.get(base.baseUrl + base.recipe + `/${params.name}`);
+    },
+
+    /**
+     * 分类查询食物
+     */
+    getFoodByCat(params){
+      return axios.get(base.baseUrl + base.food + `/${params.category}`);
     }
+
 }
 export default api;

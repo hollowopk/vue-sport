@@ -12,8 +12,8 @@ export default {
 }
 </script>
 
-<style>
-html,body{
+<style lang="less">
+*{
     padding:0;
     margin:0;
     box-sizing: border-box;

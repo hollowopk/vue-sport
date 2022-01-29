@@ -1,24 +1,19 @@
 <template>
     <div class="home">
-        <HdView />
+        <Header />
         <router-view />
     </div>
 </template>
 
 <script>
-import  HdView  from "../../components/HdView.vue"
+import  Header  from "../../components/Header.vue"
 export default {
     name:'home',
-    data(){
-        return{
-            
-        }
-    },
     components:{
-        HdView
+        Header
     }
 }
 </script>
-<style scoped lang="less">
+<style scoped>
 
 </style>

@@ -36,6 +36,7 @@
             v-model="prefData.birthday"
             style="width: 100%"
             value-format="yyyy-MM-dd"
+            @change="changeDate"
           ></el-date-picker>
         </el-form-item>
 
@@ -45,6 +46,9 @@
 
         <el-form-item label="名称" prop="name">
           <el-input v-model="prefData.name"></el-input>
+        </el-form-item>
+         <el-form-item label="年龄" prop="age">
+          <el-input v-model="prefData.age"></el-input>
         </el-form-item>
 
         <el-form-item label="电话号码" prop="phone">
@@ -98,6 +102,7 @@ export default {
         birthday: "",
         email: "",
         name: "",
+        age:"",//年龄字段，新加
         phone: "",
         sex: "",
       },
@@ -130,6 +135,9 @@ export default {
           name:[
             { required: true, message: '请输入名称', trigger: 'blur' }
           ],
+          age:[
+            { required: true, message: '请输入年龄', trigger: 'blur' }
+          ],
           phone:[
             {required: true,validator:validatePhone , trigger: 'blur'}
           ],
@@ -140,19 +148,13 @@ export default {
     };
   },
   mounted(){
+    //监听session,为表格赋初始值
      let obj = JSON.parse(sessionStorage.getItem("userMessage"));
-    /**
-     *  for (const key in this.prefData) {
-       if(key == 'sex'){
-         this.prefData[key] = String(obj[key]);
-       }
-       this.prefData[key] = obj[key];
-     }
-     */
-     const {avatar,birthday,email,name,password,phone,sex} = obj;
-     this.prefData = {avatar,birthday,email,name,password,phone,sex};  
+     const {avatar,birthday,email,name,password,phone,sex,version:age} = obj;
+     this.prefData = {avatar,birthday,email,name,password,phone,sex,age};  
      console.log("111",typeof this.prefData.sex);
   },
+ 
   methods: {
       /**
        * 完善信息
@@ -166,7 +168,8 @@ export default {
             birthday:this.prefData.birthday,
             sex:Number(this.prefData.sex),
             email:this.prefData.email,
-            phone:this.prefData.phone
+            phone:this.prefData.phone,
+            age:Number(this.prefData.age)
         }).then((res) => {
             if (res.status === 200) {
                 //获取修改密码后的用户信息
@@ -192,7 +195,15 @@ export default {
        
       })
     },
-    
+    /**
+     * 根据出生日期自动获得年龄
+     */
+    changeDate(e){
+     var date = new Date();
+     var year = date.getFullYear();
+     var ayear = e.substring(0,4);
+     this.prefData.age = year - Number(ayear);
+    },
     /**
      * 清除表单数据
      */

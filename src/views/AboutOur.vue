@@ -1,5 +1,6 @@
 <template>
   <div class="box">
+   
     <div class="search">
       <div class="title">
         <h2>超过10万种食谱数据</h2>
@@ -13,7 +14,6 @@
           @keyup.enter="search"
           v-model="content"
         />
-        <!-- <img src="@/assets/bohe_images/sousuo.png" alt=""> -->
       </div>
     </div>
     <div class="title_1">
@@ -74,15 +74,80 @@
         </ul>
       </div>
     </div>
+    <div class="title_1">
+      <h3>健康食谱&nbsp;·&nbsp;精心推荐</h3>
+      <p>Recipe recommendation</p>
+      <b></b>
+    </div>
+    <div class="container">
+      <ul class="list">
+        <li v-for="(Resitem, Resindex) in contents" :key="Resindex">
+          <div class="list_box">
+            <img :src="Resitem.picUrl" alt="" />
+            <div class="list_box_1">
+              {{ Resitem.name }}
+              <p>{{ Resitem.describe }}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="footer">
+      <div class="logo">
+        <img src="@/assets/bohe_images/logo.png" alt="" />
+      </div>
+      <div class="logo_title">
+        易氧运动&nbsp;致力中国好健康
+        <p>运动 · 饮食 · 健康 · 打卡 · 营养 · 分析 · 规划 · 督促 · 多平台</p>
+      </div>
+    </div>
+    <div class="card_title">
+      <div class="card_title_1">
+        <b></b>
+        易氧健康&nbsp;吃的放心用的舒心
+        <p>
+          团队耕耘项目多年,以“让科技领导食物营养”为宗旨；不断加强创新能力以及对食物研究深度，为中国用户提供包含食谱查询、食物营养查询,个人健康可视化数据中心;让年轻人、中老年人轻松拥抱健康生活。
+        </p>
+      </div>
+    </div>
+    <div class="card_1">
+      <div class="image_1">
+        <img :src="card_img" alt="" />
+      </div>
+      <div class="card_title_txt_1">
+        打卡数据
+        <p>
+          注册后填写个人信息<br />
+          每天在本平台上坚持打卡<br />
+          可以根据每天的打卡数据，将自己的身体状况可视化
+        </p>
+        <div class="card_btn_1">
+          <a href="">查看更多</a>
+        </div>
+      </div>
+    </div>
+    <div class="card_2">
+      <div class="card_title_txt_2">
+        食物热量
+        <p>
+          进入食物热量查询<br />
+          根据不同的分类<br />
+          查询每种食物的营养物质含量、所含热量可分类查询
+        </p>
+        <div class="card_btn_2">
+          <a @click="goMarterial" style="cursor:pointer">查看更多</a>
+        </div>
+      </div>
+      <div class="image_2">
+        <img :src="card_img_1" alt="" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
 
 export default {
-  methods: {
-    search() {},
-  },
-  components: {  },
+ 
   data() {
     return {
       picUrl: [
@@ -103,9 +168,50 @@ export default {
         },
       ],
       content: "",
-      neirong: [{}, {}, {}, {}],
+      card_img: require("../assets/bohe_images/27.png"),
+      card_img_1: require("../assets/bohe_images/28.png"),
+      contents: [
+        {
+          picUrl: require("../assets/bohe_images/10.png"),
+          name: "枸杞燕窝",
+          describe: "有助于美容养颜，适合于女性补充所需营养物质",
+        },
+        {
+          picUrl: require("../assets/bohe_images/14.png"),
+          name: "黑米黄瓜卷",
+          describe: "含有丰富的维生素，有助于减肥养身",
+        },
+        {
+          picUrl: require("../assets/bohe_images/12.png"),
+          name: "清蒸鲤鱼",
+          describe: "鱼类食物含有丰富的蛋白质，鱼眼睛可以明目",
+        },
+        {
+          picUrl: require("../assets/bohe_images/11.png"),
+          name: "蜂蜜柚子茶",
+          describe: "蜂蜜有助于润肠通便，柚子清热去火",
+        },
+        {
+          picUrl: require("../assets/bohe_images/10.png"),
+          name: "枸杞燕窝",
+          describe: "有助于美容养颜，适合于女性补充所需营养物质",
+        },
+        {
+          picUrl: require("../assets/bohe_images/14.png"),
+          name: "黑米黄瓜卷",
+          describe: "含有丰富的维生素，有助于减肥养身",
+        },
+      ],
     };
   },
+  methods:{
+    goMarterial(){
+      this.$router.push('/calorie')
+    },
+    search() {
+      this.$router.push({name:'menus',params:{name:this.content}});
+    },
+  }
 };
 </script>
 
@@ -170,7 +276,7 @@ export default {
       text-align: center;
     }
     span {
-      padding-top: 20px;
+      padding-top: 10px;
       display: block;
       font-weight: 100;
       color: #fff;
@@ -213,7 +319,7 @@ export default {
   text-align: center;
   h3 {
     font-size: 30px;
-    color: #333;
+    color: rgb(255, 86, 98);
     font-weight: 100;
   }
   p {
@@ -225,7 +331,7 @@ export default {
   b {
     width: 70px;
     height: 2px;
-    background: #444;
+    background: rgb(255, 86, 98);
     margin: 0 auto;
     display: block;
   }
@@ -238,7 +344,6 @@ export default {
   .box_3 {
     text-align: center;
     margin: 0 auto;
-    
     .pro_con {
       width: 100%;
       height: 350px;
@@ -248,11 +353,11 @@ export default {
         height: 260px;
         position: relative;
         float: left;
-        margin: 0 30px;
+        margin: 0 25px;
         list-style-type: none;
         &:hover {
           .black img {
-            margin-top: 45px;
+            margin-top: 30px;
           }
           .black i {
             opacity: 0;
@@ -326,6 +431,183 @@ export default {
           opacity: 0;
           transition: 0.3s;
         }
+      }
+    }
+  }
+}
+.container {
+  width: 1280px;
+  height: auto;
+  margin: 0 auto;
+  .list {
+    margin-left: 150px;
+    li {
+      width: 450px;
+      height: 130px;
+      list-style-type: none;
+      margin: 25px 20px;
+      float: left;
+      //border: 1px solid rgba(136, 136, 136, 0.5);
+      box-shadow: 0 2px 6px rgb(255, 86, 98);
+      display: flex;
+      align-items: center;
+      border-radius: 15px;
+      .list_box {
+        display: flex;
+        margin-left: 15px;
+        cursor: pointer;
+        img {
+          width: 110px;
+          height: 110px;
+          border-radius: 15px;
+        }
+        .list_box_1 {
+          margin-left: 15px;
+          margin-top: 25px;
+          color: rgb(255, 86, 98);
+          font-size: 18px;
+          p {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #888;
+          }
+        }
+      }
+    }
+  }
+}
+.footer {
+  margin-top: 630px;
+  width: 100%;
+  height: 320px;
+  background-color: @ownMessageColor;
+  display: flex;
+  .logo {
+    margin-top: 50px;
+    margin: auto 0;
+    img {
+      width: 250px;
+      height: 90px;
+      margin-left: 160%;
+    }
+  }
+  .logo_title {
+    margin-top: 50px;
+    padding-left: 39%;
+    font-weight: 100;
+    font-size: 38px;
+    margin: auto 0;
+    p {
+      margin-top: 30px;
+      font-size: 18px;
+      margin-left: -10px;
+    }
+  }
+}
+.card_title {
+  width: 100%;
+  height: 200px;
+  margin: 100px auto;
+  .card_title_1 {
+    width: 1200px;
+    height: 200px;
+    margin: 0 auto;
+    b {
+      margin: 0 auto;
+      width: 60px;
+      height: 4px;
+      background: rgb(55, 61, 82);
+      display: block;
+      border-radius: 5px;
+      margin-bottom: 30px;
+    }
+    text-align: center;
+    font-size: 44px;
+    color: rgb(55, 61, 82);
+    p {
+      font-size: 19px;
+      font-weight: 100;
+      color: rgb(55, 61, 82);
+      margin-top: 48px;
+    }
+  }
+}
+.card_1 {
+  width: 1300px;
+  height: 580px;
+  margin: 0 auto;
+  display: flex;
+  .image_1 {
+    img {
+      width: 700px;
+      height: 400px;
+    }
+  }
+  .card_title_txt_1 {
+    font-size: 44px;
+    color: rgb(55, 61, 82);
+    margin-top: 20px;
+    margin-left: 100px;
+    p {
+      margin-top: 30px;
+      font-weight: 100;
+      font-size: 17px;
+      color: rgb(103, 104, 124);
+    }
+    .card_btn_1 {
+      margin-top: 30px;
+      height: 50px;
+      width: 255px;
+      border: 1px solid rgb(0, 196, 179);
+      border-radius: 30px;
+      font-size: 21px;
+      //text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      a {
+        color: rgb(0, 196, 179);
+        text-decoration: none;
+      }
+    }
+  }
+}
+.card_2 {
+  width: 1300px;
+  height: 580px;
+  margin: 0 auto;
+  display: flex;
+  .image_2 {
+    img {
+      width: 700px;
+      height: 400px;
+    }
+  }
+  .card_title_txt_2 {
+    font-size: 44px;
+    color: rgb(55, 61, 82);
+    margin-top: 20px;
+    margin-right: 100px;
+    p {
+      margin-top: 30px;
+      font-weight: 100;
+      font-size: 17px;
+      color: rgb(103, 104, 124);
+    }
+    .card_btn_2 {
+      margin-top: 30px;
+      height: 50px;
+      width: 255px;
+      border: 1px solid rgb(0, 196, 179);
+      border-radius: 30px;
+      font-size: 21px;
+      //text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      a {
+        color: rgb(0, 196, 179);
+        text-decoration: none;
       }
     }
   }

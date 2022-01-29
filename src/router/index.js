@@ -5,6 +5,8 @@ import AboutOur from '../views/AboutOur'
 import Menus from '../views/Menus'
 import Calorie from '../views/Calorie'
 import OwnDetail from '../views/OwnDetail'
+import Details from '../views/Menus/Details'
+import MaterialSec from "../views/Calorie/MaterialSec"
 
 import OwnMessage from '../views/OwnMessage'
 import PrefMessage from '../views/OwnMessage/PrefMessage'
@@ -46,6 +48,17 @@ const routes = [
         name:'login',
         component:Login
       },
+      {
+        path:'details',
+        name:'details',
+        component:Details 
+      },
+      {
+        path:'materialSec',
+        name:'materialSec',
+        component:MaterialSec 
+        
+      }
      
     ]
   },
