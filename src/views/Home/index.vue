@@ -1,6 +1,8 @@
 <template>
     <div class="home">
-        <Header />
+       
+            <Header />
+      
         <router-view />
     </div>
 </template>
@@ -14,6 +16,6 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style scoped lang="less">
 
 </style>

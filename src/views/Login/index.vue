@@ -117,7 +117,18 @@
     <!--功能模块-->
     <div class="introduce">
       <div class="menus">
-        <div class="menus-item">
+        <template v-for="item in navList">
+          <div class="menus-item" :key="item.index" >
+            <div>
+           <img :src="item.card" alt="" @click="handelMemus(item.path)">
+          </div>
+          <div>
+            <span @click="handelMemus(item.path)">{{item.msg}}</span>
+          </div>
+          </div>
+        </template>
+        <!--
+          <div class="menus-item">
           <div>
             <img src="../../assets/images/introduceContainer1.gif" alt="" />
           </div>
@@ -149,6 +160,7 @@
             <span>丰富的食物讯息</span>
           </div>
         </div>
+        -->
       </div>
     </div>
   </div>
@@ -187,6 +199,33 @@ export default {
       }
     };
     return {
+      //下方的导航组件
+      navList:[
+        {
+            index:1,
+            card:require("../../assets/images/menus.jpg"),
+            msg:"美味的菜谱信息",
+            path:"/menus"
+        },
+         {
+            index:2,
+            card:require("../../assets/images/cal.jpg"),
+            msg:"丰富的热量讯息",
+            path:"/calorie"
+        },
+        {
+            index:3,
+            card:require("../../assets/images/yundong.jpg"),
+            msg:"完善的运动资讯",
+            path:"/menus"
+        },
+         {
+            index:4,
+            card:require("../../assets/images/owndeatils.jpg"),
+            msg:"科学的个人中心",
+            path:"/owndetail"
+        },
+      ],
       //登录或者注册状态：
       actionStatus: true,
       //登录信息
@@ -267,6 +306,13 @@ export default {
             })
         } 
       });
+    },
+
+    /**
+     * 跳转其他页面
+     */
+    handelMemus(path){
+      this.$router.push(path);
     },
     /**
      * 重置表单
@@ -429,14 +475,27 @@ export default {
     margin: 0 auto;
     .menus {
       display: flex;
+      margin-top:50px;
       justify-content: center;
       .menus-item {
         flex: 25%;
         text-align: center;
-        span {
+       
+        div{
+          img{
+            border-radius: 50%;
+            margin-bottom:25px;
+             cursor: pointer;
+          }
+        }
+        div{
+           span {
           font-size: 20px;
           color: #aaa;
+           cursor: pointer;
         }
+        }
+        
       }
     }
   }

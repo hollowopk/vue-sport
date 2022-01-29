@@ -1,11 +1,15 @@
 <template>
   <div class="box" ><!--v-loading.fullscreen.lock="fullscreenLoading"-->
     <div class="search">
-      <div class="title">
+      <!--<div class="title">
         <h2>超过10万种食谱数据</h2>
         <span>食物做法查询,吃适合的食物</span>
       </div>
-      <img src="@/assets/bohe_images/bg.png" />
+      -->
+      <div class="imgsty">
+         <img src="@/assets/images/谷物.jpg" />
+      </div>
+     
       <div class="container">
         <input
           type="text"
@@ -78,31 +82,20 @@
     </ul>
     <div class="fixs"></div>
     <!-- <div class="fixs_1"></div> -->
-    <div class="footer">
-      <div class="logo">
-        <img src="@/assets/bohe_images/logo.png" alt="" />
-      </div>
-      <div class="logo_title">
-        易氧运动&nbsp;致力中国好健康
-        <p>运动 · 饮食 · 健康 · 打卡 · 营养 · 分析 · 规划 · 督促 · 多平台</p>
-      </div>
-    </div>
-    <div class="card_title">
-      <div class="card_title_1">
-        <b></b>
-        易氧健康&nbsp;吃的放心用的舒心
-        <p>
-          团队耕耘项目多年,以“让科技领导食物营养”为宗旨；不断加强创新能力以及对食物研究深度，为中国用户提供包含食谱查询、食物营养查询,个人健康可视化数据中心;让年轻人、中老年人轻松拥抱健康生活。
-        </p>
-      </div>
-    </div>
+    <footerTop />
+    <footerBottom />
   </div>
 </template>
 
 <script>
+import footerTop from "@/components/footer/footerTop.vue"
+import footerBottom from "@/components/footer/footerBottom.vue"
 export default {
   name: "menus",
-
+  components:{
+    footerTop,
+    footerBottom
+  },
   data() {
     return {
       fullscreenLoading: false,
@@ -137,11 +130,12 @@ export default {
           this.contents = res.data.extend.pageInfo;
           this.content = "";
           //alert(res.extend.pageInfo.length)
-          this.$notify({
+         /* this.$notify({
             title: "搜索成功",
             message: "搜索成功",
             type: "success",
           });
+          */
         } else {
           this.$message({
             message: "没有更多了哦~",
@@ -157,20 +151,23 @@ export default {
     },
   },
   mounted() {
-    if (document.body.scrollTop) {
+  /*  if (document.body.scrollTop) {
       document.body.scrollTop = 0;
     } else {
       document.documentElement.scrollTop = 0;
     }
+    */
     var name = this.$route.params.name;
     this.content = name;
+    //如果是首页搜索进来的，页面固定在菜单栏的一定高度，直接显示具体的内容
     if (name) {
-      //alert(name)
       this.search();
+       document.documentElement.scrollTop = 200; 
     } else {
       //alert("111")
       this.content = "";
       this.search();
+       document.documentElement.scrollTop = 0; 
     }
   },
 };
@@ -241,35 +238,7 @@ export default {
   width: 100%;
   .search {
     width: 100%;
-    height: 540px;
-    background: url("../../assets/bohe_images/1.png") no-repeat center;
-    img {
-      width: 250px;
-      height: 160px;
-      position: absolute;
-      right: 8%;
-      top: 140px;
-      animation: banner 6s linear infinite;
-    }
-    .title {
-      padding-top: 140px;
-      h2 {
-        font-weight: 100;
-        font-size: 45px;
-        color: #fff;
-        text-align: center;
-      }
-      span {
-        padding-top: 20px;
-        display: block;
-        font-weight: 100;
-        color: #fff;
-        font-size: 22px;
-        text-align: center;
-      }
-    }
-  }
-  .container {
+    .container {
     margin-top: 115px;
     display: flex;
     justify-content: center;
@@ -278,10 +247,11 @@ export default {
       width: 750px;
       height: 40px;
       border-radius: 35px;
-      border: 0.5px solid #fff;
+      border: 0.5px solid @primaryColor;
       padding-left: 25px;
       //background: rgba(rgb(233, 190, 190), 0.6);
-      color: rgb(255, 255, 255);
+      
+      color: @primaryColor;
       font-size: 18px;
       font-weight: 100;
       background: url("../../assets/bohe_images/sousuo.png") no-repeat 0 0;
@@ -289,10 +259,44 @@ export default {
       background-position: 698px;
       //position: relative;
     }
+    input::-webkit-input-placeholder{
+       color: @primaryColor;
+    }
     input:focus {
       outline: none;
     }
   }
+  
+   
+    //height: 540px;
+   // background: url("../../assets/bohe_images/1.png") no-repeat center;
+   /*  img {
+      width: 250px;
+      height: 160px;
+      position: absolute;
+      right: 8%;
+      top: 140px;
+      animation: banner 6s linear infinite;
+    } */
+    /* .title {
+      padding-top: 140px;
+      h2 {
+        font-weight: 100;
+        font-size: 45px;
+        color: @primaryColor;
+        text-align: center;
+      }
+      span {
+        padding-top: 20px;
+        display: block;
+        font-weight: 100;
+        color: @primaryColor;
+        font-size: 22px;
+        text-align: center;
+      }
+    } */
+  }
+  
   //标题
   .title_1 {
     margin-top: 50px;
@@ -398,7 +402,7 @@ export default {
     }
   }
   //尾部
-  .footer {
+  /* .footer {
     margin-top: 780px;
     width: 100%;
     height: 320px;
@@ -425,7 +429,7 @@ export default {
         margin-left: -10px;
       }
     }
-  }
+  } 
   .card_title {
     width: 100%;
     height: 200px;
@@ -454,6 +458,6 @@ export default {
         margin-top: 48px;
       }
     }
-  }
+  }*/
 }
 </style>

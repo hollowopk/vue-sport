@@ -221,7 +221,7 @@ export default {
 </script>
 <style>
 
-</style>
+
 .message_style{
   margin-top: 0%;
   margin-left: 40%;
@@ -239,6 +239,7 @@ export default {
   color: @primaryColor;
 }
 .header {
+ 
   width: 1160px;
   height: 80px;
   margin: 0 auto;

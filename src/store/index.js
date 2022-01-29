@@ -14,7 +14,9 @@ export default new Vuex.Store({
       name:"",
       password:'',
       sex:"",
-    }
+    },
+    //保存热量
+    cale:0
   },
   mutations: {
     /** 存储用户信息 */
@@ -27,12 +29,25 @@ export default new Vuex.Store({
     for(var i=0;i<state.userMessage.length;i++){
        //console.log('store', state.userMessage[i]);
     }
+    },
+    /**保存热量 */
+    setCal(state,value){
+      state.cale += value;
+    },
+    /**
+     * 清空热量
+     */
+    clearCal(state){
+      state.cale = 0;
     }
   },
   getters:{
     /**获取最新的用户信息 */
     getUserMessage(state){
         return state.userMessage;
+    },
+    getCal(state){
+      return state.cale
     }
   },
   actions: {

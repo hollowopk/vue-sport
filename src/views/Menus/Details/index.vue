@@ -1,12 +1,16 @@
 <template>
-  <div class="box" ><!--v-loading="loading"-->
+  <div class="box" style="overflow-y: scroll; width: 100%; height: 100%"><!--v-loading="loading"-->
+   <el-backtop :visibility-height="clientH - 1000" :bottom="60">
+       <i class="el-icon-caret-top"></i>
+  </el-backtop>
+    <Divider />
     <div class="restitle">
       <div class="cir">
         <p></p>
       </div>
       <div class="restitle_1">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/menus' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/menus' }">菜谱首页</el-breadcrumb-item>
           <el-breadcrumb-item>{{ resname }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -32,7 +36,11 @@
         <div class="detail">
           <div class="bili">
             <i></i>
-            <div class="title">食材明细</div>
+            <div class="title">食材明细
+              <span>
+                <el-button @click="handFoodClock">今日打卡该食物</el-button>
+              </span>
+            </div>
           </div>
           <p>主料</p>
           <div class="title_1">
@@ -86,7 +94,7 @@
           <el-progress
             type="dashboard"
             v-if="percentage_1"
-            :percentage="percentage_1"
+            :percentage="percentage_1 >= 100 ? 100 : percentage_1"
             :color="colors"
             :show-text="true"
           ></el-progress>
@@ -96,7 +104,7 @@
           <el-progress
             type="dashboard"
             v-if="percentage_3"
-            :percentage="percentage_3"
+            :percentage="percentage_3 >= 100 ? 100 : percentage_3"
             :color="colors"
             :show-text="true"
           ></el-progress>
@@ -106,7 +114,7 @@
           <el-progress
             type="dashboard"
             v-if="percentage_2"
-            :percentage="percentage_2"
+            :percentage="percentage_2 >= 100 ? 100 : percentage_2"
             :color="colors"
             :show-text="true"
           ></el-progress>
@@ -136,11 +144,17 @@
               :title="'步骤' + parseInt(Resindex + 1)"
               :description="Resitem"
               :key="Resindex"
+              style="height:186px;"
             ></el-step>
           </el-steps>
         </div>
       </div>
+
+      <!-- 清除浮动-->
+       <div class="styinfo"> 
     </div>
+    </div>
+   
     <!-- <div class="swipper">
       <el-carousel height="278px" width="340px">
         <el-carousel-item v-for="item in picUrl" :key="item.id">
@@ -148,29 +162,25 @@
         </el-carousel-item>
       </el-carousel>
     </div> -->
-    <div class="card_title">
-      <div class="card_title_1">
-        <b></b>
-        易氧健康&nbsp;吃的放心用的舒心
-        <p>
-          团队耕耘项目多年,以“让科技领导食物营养”为宗旨；不断加强创新能力以及对食物研究深度，为中国用户提供包含食谱查询、食物营养查询,个人健康可视化数据中心;让年轻人、中老年人轻松拥抱健康生活。
-        </p>
-      </div>
-    </div>
+    <footerBottom />
   </div>
 </template>
 
 <script>
+import Divider from "../../../components/Divider.vue"
+import footerBottom from "@/components/footer/footerBottom.vue"
+import { mapState, mapGetters, mapMutations } from "vuex";
 export default {
+  components:{Divider,footerBottom},
   methods: {
+    ...mapMutations(["setCal"]),
+    ...mapGetters(["getCal"]),
     search(name) {
-      console.log("name",name);
       this.fullscreenLoading = true;
         this.$api.getRecipe(
           {name:name}
         ).then((res) => {
         if(res.status === 200){
-          console.log("res",res.data.extend.pageInfo[0]);
         var res = res.data.extend.pageInfo[0];
         this.resDetails.stepsPic = res.stepsPic;
         this.resDetails.steps = res.steps;
@@ -181,7 +191,6 @@ export default {
         this.resDetails.Method[2] = res.time;
         this.resDetails.Method[3] = res.difficulty;
         this.percentage_2 =parseFloat(res.energy);
-        console.log("111111",res.energy,this.percentage_2);
         this.percentage_3 = parseFloat(res.protein);
         this.percentage_1 = parseFloat(res.carbohydrate);
         this.resDetails.Ingredients = res.composition;
@@ -194,15 +203,95 @@ export default {
             this.resDetails.AuxiliaryNum[j] = res.composition[i].quantity;
             j++;
           }
-        }
+                  }
         }
       });
       this.fullscreenLoading = false;
     },
+
+    /**
+     * 菜单打卡，热量累加
+     */
+    handFoodClock(){
+      //判断用户是否登录,true用户以登录 ，false用户未登录
+      if(sessionStorage.getItem("userMessage")){
+          //计算热量, 只计算主料
+          let calenum =0;
+          let cale =0;
+        
+          for(var i=0;i<this.resDetails.MainNum.length;i++){
+           calenum += this.handleCal(this.resDetails.MainNum[i]);
+          }
+          cale = calenum *(this.percentage_1 + this.percentage_1 + this.percentage_3) / 100;
+         
+          this.setCal(cale);
+           console.log("消耗的热量",this.getCal());
+      }else{
+        //
+          this.$router.push("/login");
+      }
+    },
+
+    /**
+     * 食物热量核对方法
+     */
+    handleCal(quan){
+      let index =0;
+      let cal="";
+      console.log("@@@",quan,typeof quan);
+     if(quan.indexOf('节') > 0){
+       return 200;
+      }else if(quan.indexOf('克') >0){
+        //以g为单位的，返回数量
+        index = quan.indexOf('克');
+        cal = quan.substring(0,index);
+        return  Number(cal);
+      }
+      else if(quan.indexOf('块') >0){
+        //以块为单位的，像鸡胸肉
+        return 300;
+      }else if(quan.indexOf('根') >0){
+        //以根为单位的，像黄瓜
+        return 70;
+      }else if(quan.indexOf('适量') > 0){
+        //适量，直接返回确定的数量
+        return  300;
+      }else if(quan.indexOf('个') >0){
+        //以个为单位的，像银耳
+        return 50;
+      }else if(quan.indexOf('g') >0){
+        //以g为单位的，返回数量
+        index = quan.indexOf('g');
+        cal = quan.substring(0,index);
+        return  Number(cal);
+      }else if(quan.indexOf('张') > 0){
+        //以张为单位的
+        return 200;
+      }else if(quan.indexOf('碗') > 0){
+        return 400;
+      }else if(quan.indexOf('只') >0){
+        return 800;
+      }
+      else {
+        return 500;
+      }
+    }
+    
   },
   mounted() {
+   
+    //获取页面高度
+    this.clientH = document.body.clientHeight;
     var name = this.$route.params.name;
-    this.search(name);
+    //先判断路由是否传参
+    if(name){
+      this.paramsM = name;
+      this.search(this.paramsM);
+    }else if(this.paramsM){
+      //在判断页面携带参数是否有值
+      this.search(this.paramsM);
+    }
+    
     if (document.body.scrollTop) {
       document.body.scrollTop = 0;
     } else {
@@ -211,6 +300,10 @@ export default {
   },
   data() {
     return {
+      //页面携带参数,默认空字符串，查询所有菜单
+      paramsM:"",
+      //可视高度
+      clientH:0,
       fullscreenLoading: false,
       contents: "",
       colors: [
@@ -252,7 +345,19 @@ export default {
 html,
 body {
   background: rgb(0, 0, 0);
+  
 }
+.box {
+  height: 100%;
+  .el-backtop{
+       background-color:@primaryColor;
+      .el-icon-caret-top{
+         
+          color:white;
+      }
+  }
+}
+
 .swipper {
   width: 1278px;
   margin: 50px auto;
@@ -271,26 +376,46 @@ body {
   height: 20px;
   margin: 0 auto;
   margin-top: 40px;
-  margin-bottom: -80px;
+  margin-bottom: -70px;
   display: flex;
+
   .cir {
     margin-right: 5px;
     p {
       display: block;
       height: 10px;
       width: 5px;
-      background: rgb(97, 204, 115);
+      background-color:@ownMessageColor;
     }
   }
   .restitle_1 {
     margin-top: -2px;
+  
+   ::v-deep .el-breadcrumb{
+      .el-breadcrumb__item{
+        .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link
+        {
+          font-weight: 400;
+          font-size: 20px;
+
+        }
+        .el-breadcrumb__inner a, .el-breadcrumb__inner{
+          font-weight: 300;
+          font-size:20px ;
+        }
+        .el-breadcrumb__inner:hover{
+          color:@primaryColor
+        }
+      }
+    }
   }
 }
 .introduce {
   width: 1100px;
-  height: 530px;
+  height: 2000px;
   margin: 50px auto;
   margin-top: 90px;
+  margin-bottom: 30px;
   .ups {
     display: flex;
     .image_1 {
@@ -366,6 +491,7 @@ body {
     display: flex;
     margin-top: 30px;
     margin-left: 80px;
+
     .imageUrl {
       li {
         list-style-type: none;
@@ -377,9 +503,27 @@ body {
       }
     }
 
-    .steps {
+  ::v-deep{
+     .steps {
       margin-left: 80px;
+      .el-step{
+        .el-step__head.is-finish{
+             color: #009688;
+             .el-step__line-inner{
+               color:#009688;
+             }
+        }
+        .el-step__main{
+          .el-step__title{
+            color: #009688;
+          }.el-step__description{
+            color: #009688;
+          }
+        }
+      }
+      
     }
+  }
   }
   .public_title {
     width: 1160px;
@@ -426,35 +570,16 @@ body {
       }
     }
   }
+  .styinfo{
+  height:0px;
+  clear: both;
 }
-.card_title {
-  width: 100%;
-  height: 200px;
-  margin: 50px auto;
-  margin-top: 145%;
-  margin-bottom: 20px;
-  .card_title_1 {
-    width: 1200px;
-    height: 200px;
-    margin: 0 auto;
-    b {
-      margin: 0 auto;
-      width: 60px;
-      height: 4px;
-      background: rgb(55, 61, 82);
-      display: block;
-      border-radius: 5px;
-      margin-bottom: 30px;
-    }
-    text-align: center;
-    font-size: 44px;
-    color: rgb(55, 61, 82);
-    p {
-      font-size: 19px;
-      font-weight: 100;
-      color: rgb(55, 61, 82);
-      margin-top: 48px;
-    }
-  }
+
 }
+.introduce::after{
+                content:"";/*添加一个内容*/
+                display:inline-block;/*转换为一个块元素*/
+                clear:both;/*清除两侧浮动*/
+            }
+
 </style>
