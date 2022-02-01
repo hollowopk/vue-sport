@@ -264,7 +264,9 @@ export default {
     handleChange(file, fileList) {
       console.log("111",file.name);
      // this.prefData.avatar = URL.createObjectURL(file.raw);
+ 
      this.prefData.avatar = file.name;
+        
     },
 
     beforeUpload(file) {

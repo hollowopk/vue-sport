@@ -3,9 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/element.js'
-import api from "./api"
+import api from "./api/index"
+import http from "./api/http"
 
 Vue.prototype.$api = api;
+Vue.prototype.$http = http;
 Vue.config.productionTip = false
 
 Vue.prototype.$addStorageEvent = function (key, newVal) {

@@ -2,8 +2,9 @@
     <div class="home">
        
             <Header />
-      
+     
         <router-view />
+   
     </div>
 </template>
 

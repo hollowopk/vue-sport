@@ -33,15 +33,15 @@
             ref="input2" @keyup.enter.native="handelTab(2,$event)"></el-input>
           </el-form-item>
           <el-form-item label="摄入热量" prop="calorie">
-            <el-input v-model="clockForm.calorie"
+            <el-input v-model="clockForm.calorie" :disabled="true"
             ref="input3" @keyup.enter.native="handelTab(3,$event)"></el-input>
           </el-form-item>
           <el-form-item label="喝水量" prop="drink">
             <el-input v-model="clockForm.drink" 
            ref="input4" @keyup.enter.native="handelTab(4,$event)"></el-input>
           </el-form-item>
-          <el-form-item label="运动步数" prop="steps">
-            <el-input v-model="clockForm.steps"
+          <el-form-item label="消耗热量" prop="steps">
+            <el-input v-model="clockForm.steps"  :disabled="true"
             ref="input5" @keyup.enter.native="handelTab(5,$event)"></el-input>
           </el-form-item>
         </el-form>
@@ -55,6 +55,7 @@
 </template>
 <script>
 import { nextFocus } from "../utils/nextFocus";
+import { mapState, mapGetters, mapMutations } from "vuex";
 export default {
   name: "click",
   props: {
@@ -78,13 +79,26 @@ export default {
         }
     },
     created(){
-        this.clockForm = JSON.parse(JSON.stringify(this.childClockForm));
+       
+    },
+    mounted(){
+       this.clockForm = JSON.parse(JSON.stringify(this.childClockForm));
         this.clockDialog = this.childClockDialog;
+       //获取摄入热量
+            this.clockForm.calorie = this.getCal();
+            console.log("摄入热量",this.clockForm.calorie,this.getCal());
+            //获取消耗热量
+            this.clockForm.stpes = this.getSport();
     },
   watch:{
     childClockForm:{
       handler(){
          this.clockForm = JSON.parse(JSON.stringify(this.childClockForm));
+           this.clockForm.calorie = this.getCal();
+            console.log("摄入热量",this.clockForm.calorie,this.getCal());
+            //获取消耗热量
+            this.clockForm.stpes = this.getSport();
+             console.log("消耗热量",this.clockForm.stpes,this.getSport());
       },
       immediate:true,
       deep:true
@@ -106,6 +120,8 @@ export default {
     }
   },
   methods: {
+      ...mapGetters(["getCal","getSport"]),
+   
     /**
      * 打卡事件
      */

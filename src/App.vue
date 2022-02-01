@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" style="minWidth:1400px;">
 <router-view></router-view>
   </div>
 </template>
@@ -18,4 +18,5 @@ export default {
     margin:0;
     box-sizing: border-box;
 }
+
 </style>

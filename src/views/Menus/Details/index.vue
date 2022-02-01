@@ -190,9 +190,11 @@ export default {
         this.resDetails.Method[1] = res.cookingMethod;
         this.resDetails.Method[2] = res.time;
         this.resDetails.Method[3] = res.difficulty;
-        this.percentage_2 =parseFloat(res.energy);
-        this.percentage_3 = parseFloat(res.protein);
-        this.percentage_1 = parseFloat(res.carbohydrate);
+        //菜谱热量
+        this.menuCale = res.energy;
+        this.percentage_2 =parseFloat(res.energy / 2.89).toFixed(2) -0;
+        this.percentage_3 = parseFloat(res.protein / 0.2388).toFixed(2) -0;
+        this.percentage_1 = parseFloat(res.carbohydrate / 0.317).toFixed(2) -0;
         this.resDetails.Ingredients = res.composition;
         for (var i = 0, j = 0; i < res.composition.length; i++) {
           if (res.composition[i].category == "主料") {
@@ -203,7 +205,7 @@ export default {
             this.resDetails.AuxiliaryNum[j] = res.composition[i].quantity;
             j++;
           }
-                  }
+        }
         }
       });
       this.fullscreenLoading = false;
@@ -216,29 +218,34 @@ export default {
       //判断用户是否登录,true用户以登录 ，false用户未登录
       if(sessionStorage.getItem("userMessage")){
           //计算热量, 只计算主料
-          let calenum =0;
+        /*  let calenum =0;
           let cale =0;
-        
           for(var i=0;i<this.resDetails.MainNum.length;i++){
            calenum += this.handleCal(this.resDetails.MainNum[i]);
           }
           cale = calenum *(this.percentage_1 + this.percentage_1 + this.percentage_3) / 100;
-         
-          this.setCal(cale);
+         */
+        //将摄入热量存储vuex中
+          this.setCal(this.menuCale);
            console.log("消耗的热量",this.getCal());
+           //消息提示，打卡成功
+           this.$message({
+             message:"打卡成功",
+             type:"success",
+             customClass:"message_style"
+           })
       }else{
-        //
-          this.$router.push("/login");
+        this.$router.push({ name: "login", params: { name: this.paramsM,path:'details' } })
+         // this.$router.push("/login",);
       }
     },
 
     /**
      * 食物热量核对方法
      */
-    handleCal(quan){
+   /* handleCal(quan){
       let index =0;
       let cal="";
-      console.log("@@@",quan,typeof quan);
      if(quan.indexOf('节') > 0){
        return 200;
       }else if(quan.indexOf('克') >0){
@@ -276,20 +283,20 @@ export default {
         return 500;
       }
     }
+    */
     
   },
   mounted() {
    
     //获取页面高度
     this.clientH = document.body.clientHeight;
-    var name = this.$route.params.name;
+    let name = this.$route.params.name;
     //先判断路由是否传参
     if(name){
       this.paramsM = name;
       this.search(this.paramsM);
-    }else if(this.paramsM){
-      //在判断页面携带参数是否有值
-      this.search(this.paramsM);
+    }else{
+     this.search();
     }
     
     if (document.body.scrollTop) {
@@ -300,6 +307,8 @@ export default {
   },
   data() {
     return {
+      //菜谱热量
+      menuCale:0,
       //页面携带参数,默认空字符串，查询所有菜单
       paramsM:"",
       //可视高度
@@ -340,7 +349,12 @@ export default {
   },
 };
 </script>
-
+<style>
+.message_style{
+  margin-top: 0%;
+  margin-left: 40%;
+}
+</style>
 <style scoped lang="less">
 html,
 body {

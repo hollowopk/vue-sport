@@ -9,6 +9,13 @@ module.exports = {
                 },
                 changeOrigin:true // 允许跨域
             },
+            "/http":{
+              target:"https://api-hmugo-web.itheima.net/api/public/v1/",
+              pathRewrite:{ // 重写路径
+                  "^/http":""
+              },
+              changeOrigin:true // 允许跨域
+          },
         }
     },
     pluginOptions: {

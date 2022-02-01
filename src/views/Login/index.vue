@@ -264,12 +264,22 @@ export default {
       identifyCodes: "abcdefghijklnmopqrstuvwxyz",
       //ABCDEFGHIJKLMNOPQRSTUVWXYZ
       //未登录查看相应数据的提示语
-      prompt:''
+      prompt:'',
+      //路由携带数据
+      params:"",
+      //路由路径
+      path:''
     };
   },
   mounted() {
     this.identifyCode = "";
     this.makeCode(this.identifyCodes, 4);
+    //监听路由参数
+    if(this.$route.params){
+       var name = this.$route.params.name;
+      this.params = name;
+      this.path = this.$route.params.path;
+    }
   },
   methods: {
     ...mapMutations(["setUser"]),
@@ -293,7 +303,12 @@ export default {
                 this.$addStorageEvent('userMessage',JSON.stringify(res.data.extend.user));
                 //sessionStorage.setItem("userMessage", );
                 //跳转回上一个页面
-                this.$router.go(-1);
+              if(this.params){
+                this.$router.push({ name: this.path, params: { name: this.params } });
+              }
+              else{
+                 this.$router.back();
+              }
               }else{
               }
             },e => {

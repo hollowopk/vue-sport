@@ -100,6 +100,7 @@ export default {
    this.monitorSession();
   },
   methods: {
+      ...mapMutations(["clearCal","clearSport"]),
     /**
      * 监听session,获取数据
      */
@@ -112,6 +113,7 @@ export default {
        this.userMessage = JSON.parse(obj.newValue);
         this.clockForm.userId = this.userMessage.id;
         this.clockForm.username = this.userMessage.account;
+        
       
       } else {
         this.userMessage = {};
@@ -165,6 +167,7 @@ export default {
           result = res;
           if (result == 0) {
             this.clockForm.username = this.userMessage.account;
+            
             this.clockDialog = true;
           } else {
             this.$message({
@@ -187,6 +190,10 @@ export default {
         if (res.status == 200) {
           sessionStorage.removeItem("userMessage");
           this.userMessage = {};
+          //热量数据清空
+          this.clearCal();
+          //消耗热量清空
+          this.clearSport();
           //切换至首页
           this.$router.push("/recipes");
         }
@@ -240,7 +247,7 @@ export default {
 }
 .header {
  
-  width: 1160px;
+  width: 90%;
   height: 80px;
   margin: 0 auto;
   a .logo {
@@ -251,7 +258,7 @@ export default {
   }
   .nav {
     float: left;
-    margin-left: 100px;
+    margin-left: 80px;
     margin-top: 5px;
     .el-menu.el-menu--horizontal {
       border-bottom: none;

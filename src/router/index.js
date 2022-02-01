@@ -4,9 +4,16 @@ import Home from '../views/Home'
 import AboutOur from '../views/AboutOur/index.vue'
 import Menus from '../views/Menus'
 import Calorie from '../views/Calorie'
+
+import Product from '../views/Product'
 import OwnDetail from '../views/OwnDetail'
 import Details from '../views/Menus/Details'
 import MaterialSec from "../views/Calorie/MaterialSec"
+
+import Sport from '../views/Sport'
+import SportsEquipment from '../views/Sport/SportsEquipment'
+import Ball from '../views/Sport/Ball'
+import SportDetails from '../views/Sport/Details'
 
 import OwnMessage from '../views/OwnMessage'
 import PrefMessage from '../views/OwnMessage/PrefMessage'
@@ -39,6 +46,29 @@ const routes = [
         component:Calorie
       },
       {
+        path:'sport',
+        name:'sport',
+        redirect:'/sport/ball',
+        component:Sport,
+        children:[
+          {
+            path:'ball',
+            name:'ball',
+            component:Ball
+          },
+          {
+            path:'sportsEquipment',
+            name:'sportsEquipment',
+            component:SportsEquipment
+          }
+        ]
+      },
+      {
+        path:'product',
+        name:'product',
+        component:Product
+      },
+      {
         path:'owndetail',
         name:'owndetail',
         component:OwnDetail
@@ -58,7 +88,13 @@ const routes = [
         name:'materialSec',
         component:MaterialSec 
         
-      }
+      },
+      {
+        path:'sportsDetails',
+        name:'sportsDetails',
+        component:SportDetails 
+        
+      },
      
     ]
   },

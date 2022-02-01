@@ -80,7 +80,29 @@ const api ={
      */
     getFoodByCat(params){
       return axios.get(base.baseUrl + base.food + `/${params.category}`);
-    }
+    },
+
+    /**
+     * 分类查询运动
+     */
+    getSportByCategory(params){
+      return axios.get(base.baseUrl + base.sports + `/${params.category}` + `?pn=${params.pn}`);
+    },
+
+    /**
+     * 模糊查询某个运动
+     */
+    getSportByName(params){
+      return axios.get(base.baseUrl + base.sportName + `/${params.name}` + `?pn=${params.pn}`);
+    },
+
+    /**
+     * 查询所有运动
+     */
+    getSportAll(params){
+      return axios.get(base.baseUrl + base.sportAll + `?pn=${params.pn}`);
+    },
+
 
 }
 export default api;
