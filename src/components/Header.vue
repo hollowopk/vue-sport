@@ -77,9 +77,9 @@ export default {
         username: "",
         height: "",
         weight: "",
-        calorie: "",
+        calorie: 0,
         drink: "",
-        stpes: "",
+        stpes: 0,
       },
       //获取用户信息
       userMessage: {},

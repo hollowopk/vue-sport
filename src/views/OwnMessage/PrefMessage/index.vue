@@ -259,10 +259,8 @@ export default {
 
     resetForm() {
       this.$refs.prefData.resetFields(file);
-      console.log("2222",file);
     },
     handleChange(file, fileList) {
-      console.log("111",file.name);
      // this.prefData.avatar = URL.createObjectURL(file.raw);
  
      this.prefData.avatar = file.name;

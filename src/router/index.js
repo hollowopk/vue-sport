@@ -6,7 +6,13 @@ import Menus from '../views/Menus'
 import Calorie from '../views/Calorie'
 
 import Product from '../views/Product'
+
 import OwnDetail from '../views/OwnDetail'
+import Energy from '../views/OwnDetail/Energy'
+import Body from '../views/OwnDetail/Body'
+import Steps from '../views/OwnDetail/Steps'
+import TimeData from '../views/OwnDetail/TimeData'
+
 import Details from '../views/Menus/Details'
 import MaterialSec from "../views/Calorie/MaterialSec"
 
@@ -71,7 +77,31 @@ const routes = [
       {
         path:'owndetail',
         name:'owndetail',
-        component:OwnDetail
+        component:OwnDetail,
+        redirect:'/owndetail/timedata',
+        children:[
+          {
+            path:'energy',
+            name:'energy',
+            component:Energy
+          },
+          {
+            path:'body',
+            name:'body',
+            component:Body
+          },
+          {
+            path:'steps',
+            name:'steps',
+            component:Steps
+          },
+          {
+            path:'timedata',
+            name:'timedata',
+            component:TimeData
+          }
+        ]
+
       },
       {
         path:'/login',

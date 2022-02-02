@@ -152,7 +152,7 @@ export default {
      let obj = JSON.parse(sessionStorage.getItem("userMessage"));
      const {avatar,birthday,email,name,password,phone,sex,version:age} = obj;
      this.prefData = {avatar,birthday,email,name,password,phone,sex,age};  
-     console.log("111",typeof this.prefData.sex);
+
   },
  
   methods: {
@@ -214,7 +214,6 @@ export default {
 
     handleChange(file, fileList) {
       this.prefData.avatar = URL.createObjectURL(file.raw);
-       console.log("this.prefData.avatar",this.prefData.avatar,file.raw);
     },
 
     beforeUpload(file) {

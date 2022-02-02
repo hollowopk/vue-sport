@@ -227,7 +227,6 @@ export default {
          */
         //将摄入热量存储vuex中
           this.setCal(this.menuCale);
-           console.log("消耗的热量",this.getCal());
            //消息提示，打卡成功
            this.$message({
              message:"打卡成功",

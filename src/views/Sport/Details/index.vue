@@ -141,11 +141,15 @@ export default {
      * 
      */
     handleStr(){
+      let index = 0;
       if(this.detail.name.indexOf("(") > 0){
-         let index = this.detail.name.indexOf("(");
-        console.log("detail",index);
+         index = this.detail.name.indexOf("(");
       this.title = this.detail.name.substring(0,index);
-      }else{
+      }else if(this.detail.name.indexOf("（") > 0){
+           index = this.detail.name.indexOf("（");
+            this.title = this.detail.name.substring(0,index);
+      }
+      else{
         this.title = this.detail.name;
       }
     },
@@ -154,11 +158,11 @@ export default {
      */
     submitForm(){
         //每千克每分钟消耗热量
-      let dan = 210/60/60;
+      let dan = this.detail.energy/60/60;
       this.cal = parseFloat(dan * this.ruleForm.height * Number(this.ruleForm.time)).toFixed(2);
        //消息提示，打卡成功
           this.$message({
-             message:'您做该运动'+`${this.ruleForm.time}`+'共计消耗了'+`${this.cal}`+'的热量',
+             message:'您做该运动'+`${this.ruleForm.time}`+'分钟,共计消耗了'+`${this.cal}`+'的热量',
              type:"success",
           })
     },

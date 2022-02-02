@@ -41,7 +41,7 @@
            ref="input4" @keyup.enter.native="handelTab(4,$event)"></el-input>
           </el-form-item>
           <el-form-item label="消耗热量" prop="steps">
-            <el-input v-model="clockForm.steps"  :disabled="true"
+            <el-input v-model="clockForm.stpes"  :disabled="true"
             ref="input5" @keyup.enter.native="handelTab(5,$event)"></el-input>
           </el-form-item>
         </el-form>
@@ -85,20 +85,14 @@ export default {
        this.clockForm = JSON.parse(JSON.stringify(this.childClockForm));
         this.clockDialog = this.childClockDialog;
        //获取摄入热量
-            this.clockForm.calorie = this.getCal();
-            console.log("摄入热量",this.clockForm.calorie,this.getCal());
+            this.clockForm.calorie = sessionStorage.getItem("cale");
             //获取消耗热量
-            this.clockForm.stpes = this.getSport();
+            this.clockForm.stpes =  sessionStorage.getItem("sport");
     },
   watch:{
     childClockForm:{
       handler(){
          this.clockForm = JSON.parse(JSON.stringify(this.childClockForm));
-           this.clockForm.calorie = this.getCal();
-            console.log("摄入热量",this.clockForm.calorie,this.getCal());
-            //获取消耗热量
-            this.clockForm.stpes = this.getSport();
-             console.log("消耗热量",this.clockForm.stpes,this.getSport());
       },
       immediate:true,
       deep:true
@@ -106,6 +100,16 @@ export default {
     childClockDialog:{
       handler(){
          this.clockDialog = this.childClockDialog;
+         if(sessionStorage.getItem("cale")){
+             this.clockForm.calorie = sessionStorage.getItem("cale");
+         }else{
+            this.clockForm.calorie= 0;
+         }
+         if(sessionStorage.getItem("sport")){
+             this.clockForm.stpes = sessionStorage.getItem("sport");
+         }else{
+            this.clockForm.stpes= 0;
+         }
         /**
          *  this.$nextTick(() => {
            if(this.childClockDialog){

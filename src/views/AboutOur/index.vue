@@ -204,7 +204,6 @@ export default {
   },
   mounted() {
     this.clientH = document.body.clientHeight;
-    console.log("this.client",this,this.clientH);
   },
   methods: {
     goMarterial() {

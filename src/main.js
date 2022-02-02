@@ -5,7 +5,9 @@ import store from './store'
 import './plugins/element.js'
 import api from "./api/index"
 import http from "./api/http"
+import echarts from 'echarts'
 
+Vue.prototype.$echarts = echarts
 Vue.prototype.$api = api;
 Vue.prototype.$http = http;
 Vue.config.productionTip = false
