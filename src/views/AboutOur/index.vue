@@ -207,6 +207,7 @@ export default {
   },
   methods: {
     goMarterial() {
+      
       this.$router.push("/calorie");
     },
     search() {

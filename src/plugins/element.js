@@ -4,7 +4,7 @@ import { Button ,Menu,MenuItem,Card,Form,FormItem,Input,Carousel,
     DropdownMenu,DropdownItem,Message,
     Breadcrumb,BreadcrumbItem,Divider,DatePicker,
     Upload,Select,Option,PageHeader,Loading,Progress,Notification,
-    Steps,Step,Pagination,Backtop} from 'element-ui'
+    Steps,Step,Pagination,Backtop,InputNumber} from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Menu)
@@ -36,5 +36,6 @@ Vue.use(Steps)
 Vue.use(Step)
 Vue.use(Pagination)
 Vue.use(Backtop)
+Vue.use(InputNumber)
 Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message ;

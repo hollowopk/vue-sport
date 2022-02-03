@@ -16,7 +16,6 @@ export default {
 </script>
 <style scoped lang="less">
 .footer {
-  margin-top: 630px;
   width: 100%;
   height: 320px;
   background-color: @ownMessageColor;

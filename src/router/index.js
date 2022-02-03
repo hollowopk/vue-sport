@@ -6,6 +6,8 @@ import Menus from '../views/Menus'
 import Calorie from '../views/Calorie'
 
 import Product from '../views/Product'
+import ProductCate from '../views/Product/productCate'
+import ProductDetail from '../views/Product/productDetail'
 
 import OwnDetail from '../views/OwnDetail'
 import Energy from '../views/OwnDetail/Energy'
@@ -72,7 +74,7 @@ const routes = [
       {
         path:'product',
         name:'product',
-        component:Product
+        component:Product,
       },
       {
         path:'owndetail',
@@ -124,6 +126,16 @@ const routes = [
         name:'sportsDetails',
         component:SportDetails 
         
+      },
+      {
+        path:'productCate',
+        name:'productCate',
+        component:ProductCate
+      },
+      {
+        path:'productDetail',
+        name:'productDetail',
+        component:ProductDetail
       },
      
     ]

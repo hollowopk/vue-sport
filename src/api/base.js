@@ -14,6 +14,9 @@ const base ={
     sports:"/sport/category",//分类查询运动
     sportName:'/sport/name',//模糊查询某种运动
     sportAll:'/sport/all',//查询所有运动,
-    produceCate:"/categories",//商品分类
+
+    produceCate:"/categories",//商品分类,
+    productLists:'/goods/search',//商品列表搜索
+    goodsDetail:'/goods/detail',//商品详情
 }
 export default base;
