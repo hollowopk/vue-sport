@@ -18,5 +18,9 @@ const base ={
     produceCate:"/categories",//商品分类,
     productLists:'/goods/search',//商品列表搜索
     goodsDetail:'/goods/detail',//商品详情
+
+    addCart:'/userCart/cartOperation',//加入购物车
+    addCollect:"/userCart/collectOperation",//商品收藏
+    getCollect:'/userCart/showCollect',//收藏商品列表
 }
 export default base;

@@ -103,6 +103,30 @@ const api ={
       return axios.get(base.baseUrl + base.sportAll + `?pn=${params.pn}`);
     },
 
+    /**
+     * 加入购物车
+     */
+     addCart(params){
+      return axios.get(base.baseUrl + base.addCart +
+         `/${params.goodsid}` + `/${params.cart}`);
+    },
+
+    /**
+     * 商品收藏
+     */
+
+    addCollect(params){
+      return axios.get(base.baseUrl + base.addCollect +
+        `/${params.goodsid}` + `/${params.collect}`);
+   },
+
+   /**
+    * 收藏商品列表
+    */
+    getCollect(){
+      return axios.get(base.baseUrl + base.getCollect);
+    }
+
 
 }
 export default api;

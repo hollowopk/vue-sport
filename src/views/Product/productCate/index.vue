@@ -81,7 +81,10 @@ export default {
       pageNum: 1,
       pageSize: 20,
       onOff: true,
-      //面包屑导航数据
+      //面包屑导航数据,
+
+      //路由跳转参数
+      paramsM:{}
     };
   },
   mounted() {
@@ -109,7 +112,7 @@ export default {
           pagenum: this.pageNum,
         })
         .then((res) => {
-          console.log("res", res);
+
           if (res.status === 200) {
             this.goodsList.push(...res.data.message.goods);
             this.totalNum = res.data.message.total;
@@ -130,14 +133,24 @@ export default {
      * 商品详情页面
      */
     getGoodsDetail(id) {
-      this.$router.push({
-        name: "productDetail",
-        params: {
+      //首先判断用户是否登录
+      let userMessage = sessionStorage.getItem("userMessage");
+      this.paramsM ={
           goods_id: id,
           secondCat: this.catName,
           threeCat: this.cateList[this.activeIndex].cat_name,
-        },
+        };
+      if(userMessage){
+          this.$router.push({
+        name: "productDetail",
+       params: { name: this.paramsM}
       });
+      }else{
+         this.$router.push({ name: "login", params: { name: this.paramsM,path:'productDetail' } })
+        //用户未登录，先进入登录页面进行登录
+
+      }
+      
     },
 
     handleScroll(e) {
@@ -260,14 +273,19 @@ export default {
   }
   .conta {
     flex: 1;
-    width: 80%;
-    margin: 20px auto;
+    width: 60%;
+    margin: 40px auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    position:relative;
     .cate_nav {
-      width: 150px;
-      height: 300px;
+      width: 120px;
+      text-align: center;
+      height: 330px;
+      top: 180px;
+      left: 100px;
+      position: fixed;
       background-color: aqua;
       .list_item {
         display: flex;
@@ -281,7 +299,7 @@ export default {
         }
         .list_intr {
           flex: 50%;
-          margin-left: 50px;
+        
         }
       }
     }

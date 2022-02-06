@@ -1,5 +1,6 @@
 <template>
   <div class="sportlist">
+    <p></p>
     <ul class="card" style="minHeight:400px;">
       <li class="card_0" v-for="(item, index) in content" :key="index">
         <div
@@ -7,9 +8,9 @@
           @click="goDetails(item)"
           style="cursor: pointer"
         >
-          <img :src="item.icon" />
+          <img :src="handleImg(item.icon) ? item.icon : 'https://ww1.sinaimg.cn/large/007rAy9hgy1g24by9t530j30i20i2glm.jpg'" />
           <div class="title_0">
-            {{ item.name }}
+           <div> {{ item.name }}</div>
             <p>{{ item.energy }}大卡/每小时</p>
           </div>
         </div>
@@ -145,6 +146,14 @@ export default {
     goDetails(item) {
       this.$router.push({ name: "sportsDetails", params: { name: item } });
     },
+
+    /**
+    *判断图片的格式
+     */
+     handleImg(imgStr){
+       let reg = /\.jpg$/;
+       return reg.test(imgStr);
+     }
   },
 };
 </script>
@@ -152,36 +161,63 @@ export default {
 .sportlist{
   display: flex;
   flex-direction: column;
+ 
   .card {
+  
   width: 1300px;
   height: auto;
   margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+     margin-top: 20px;
   .card_0 {
-    margin: 20px 40px;
-    width: 180px;
-    height: 270px;
+    flex:0 1 16%;
+    margin:10px 22px;
+    background-color: rgb(228, 235, 232);
+    text-align: center;
     overflow: hidden;
     list-style-type: none;
-    box-shadow: 0 3px 8px @primaryColor;
-    float: left;
+     border-radius: 10%;
+   
+      padding: 15px 5px;
     .card_1 {
+      margin: 0 auto;
+         width: 180px;
       img {
+        
         width: 180px;
         height: 180px;
       }
       .title_0 {
+         text-align: left;
         color: black;
         font-size: 15px;
         font-weight: 100;
         margin: 10px 5px;
+        div{
+          height: 40px;
+        }
         p {
           font-size: 14px;
           color: #888;
         }
       }
     }
+   
+    
+  }
+  
+  .card_0:hover{
+    background-color: white;
+       box-shadow: 0 19px 39px 0 rgb(0 0 0 / 12%);
+     
   }
 }
+.card:after {
+    content: "";
+    flex: auto;
+  }
 .page {
   margin: 20px auto;
 }

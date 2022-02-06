@@ -4,7 +4,7 @@
     <div class="bg-style">
       <div class="bg-left">
         <div class="title">
-          <h2>宜氧运动</h2>
+          <h2>易氧运动</h2>
           <!-- <img src="@/assets/bohe_images/bg.png" />-->
         </div>
       </div>
@@ -265,21 +265,29 @@ export default {
       //ABCDEFGHIJKLMNOPQRSTUVWXYZ
       //未登录查看相应数据的提示语
       prompt:'',
+
       //路由携带数据
       params:"",
       //路由路径
-      path:''
+      path:'',
+
     };
   },
   mounted() {
-    this.identifyCode = "";
-    this.makeCode(this.identifyCodes, 4);
+    
+    if(this.$route.params.actionStatus){
+          this.actionStatus = ! this.$route.params.actionStatus;
+        }
     //监听路由参数
-    if(this.$route.params){
-       var name = this.$route.params.name;
+    if(this.$route.params.path){
+         let name = this.$route.params.name;
       this.params = name;
       this.path = this.$route.params.path;
+    
     }
+
+     this.identifyCode = "";
+    this.makeCode(this.identifyCodes, 4);
   },
   methods: {
     ...mapMutations(["setUser"]),
