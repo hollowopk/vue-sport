@@ -125,7 +125,14 @@ const api ={
     */
     getCollect(){
       return axios.get(base.baseUrl + base.getCollect);
-    }
+    },
+
+    /**
+     * 购物车列表
+     */
+     getCart(){
+       return axios.get(base.baseUrl + base.getCart);
+     }
 
 
 }

@@ -9,6 +9,8 @@ import Product from '../views/Product'
 import ProductCate from '../views/Product/productCate'
 import ProductDetail from '../views/Product/productDetail'
 
+import Cart from '../views/Cart'
+
 import OwnDetail from '../views/OwnDetail'
 import Energy from '../views/OwnDetail/Energy'
 import Body from '../views/OwnDetail/Body'
@@ -137,6 +139,12 @@ const routes = [
         name:'productDetail',
         component:ProductDetail
       },
+      {
+        path:'cart',
+        name:'cart',
+        component:Cart
+      },
+      
      
     ]
   },

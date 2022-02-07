@@ -476,6 +476,7 @@ export default {
         border-radius: 10%;
         .images {
           text-align: center;
+          
           img {
             width: 70%;
           }
@@ -484,6 +485,7 @@ export default {
           text-align: center;
           color: #3c3c3c;
           text-align: left;
+          height:38px;
           font-size: 14px;
           font-weight: 100;
           overflow: hidden;

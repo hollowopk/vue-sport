@@ -21,7 +21,7 @@
           <div class="avatar_name">Hi,{{userMessage.account}}你好</div>
         </div>
         <div class="own-datail">
-          <div class="cart">购物车</div>
+          <div class="cart" @click="goCart">购物车</div>
           <div class="collect">收藏夹</div>
           <div class="shezhi">设置</div>
         </div>
@@ -74,6 +74,13 @@ export default {
       this.userMessage = JSON.parse(userMessage);
     }
     
+    },
+    
+    /**
+     *跳转至购物车页面
+     */
+    goCart(){
+      this.$router.push("/cart");
     },
 
     /**
@@ -140,12 +147,15 @@ export default {
       color: #aaa;
       .cart{
           flex: 30%;
+          cursor: pointer;
       }
       .collect{
           flex: 30%;
+           cursor: pointer;
       }
       .shezhi{
           flex: 30%;
+           cursor: pointer;
       }
       }
        

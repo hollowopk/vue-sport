@@ -178,6 +178,7 @@ export default {
       this.getGoodsDetail();
        this.getCollect();
     }
+     document.documentElement.scrollTop = 0;
    
   },
   methods: {
