@@ -3,7 +3,7 @@
     <div class="search">
       <div class="title">
         <h2>超过50万种食物数据</h2>
-        <span>食物营养查询,吃适合的食物</span>
+        <span>根据食物名称查询,吃适合的食物</span>
       </div>
       <img src="@/assets/bohe_images/bg.png" />
       <div class="container">
@@ -121,17 +121,18 @@ export default {
   },
   methods: {
     search() {
-      this.$notify({
-        title: "搜索成功",
-        message: "搜索成功",
-        type: "success",
-      });
+      this.goDetails()
       this.content = "";
     },
     goSec(index){
       this.$router.push({name:'materialSec',params: {name:index}})
     },
-    goMyself() {},
+    goDetails() {
+      this.$router.push({ name: "MaterialThird", params: { name: this.content } });
+    },
+    goMyself() {
+      this.$router.push("/owndetail/timedata")
+    },
   },
   mounted() {
     if (document.body.scrollTop) {

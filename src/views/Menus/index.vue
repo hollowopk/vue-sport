@@ -1,15 +1,12 @@
 <template>
-  <div class="box" ><!--v-loading.fullscreen.lock="fullscreenLoading"-->
+  <div class="box">
+    <!--v-loading.fullscreen.lock="fullscreenLoading"-->
     <div class="search">
-      <!--<div class="title">
+      <div class="title">
         <h2>超过10万种食谱数据</h2>
         <span>食物做法查询,吃适合的食物</span>
       </div>
-      -->
-      <div class="imgsty">
-         <img src="@/assets/images/谷物.jpg" />
-      </div>
-     
+      <img src="@/assets/bohe_images/bg.png" />
       <div class="container">
         <input
           type="text"
@@ -88,13 +85,13 @@
 </template>
 
 <script>
-import footerTop from "@/components/footer/footerTop.vue"
-import footerBottom from "@/components/footer/footerBottom.vue"
+import footerTop from "@/components/footer/footerTop.vue";
+import footerBottom from "@/components/footer/footerBottom.vue";
 export default {
   name: "menus",
-  components:{
+  components: {
     footerTop,
-    footerBottom
+    footerBottom,
   },
   data() {
     return {
@@ -108,50 +105,48 @@ export default {
           name: "枸杞燕窝",
           describe: "有助于美容养颜，适合于女性补充所需营养物质",
         },
-       
       ],
     };
   },
   methods: {
     search() {
-      this.fullscreenLoading = true,
-      this.$api.getRecipe(
-          {name:this.content}
-        ).then((res) =>{
-      
-       
-         if (res.status === 200) {
-          
-          if (res.data.extend.pageInfo.length > 0) {
-            this.isShow = false;
-          } else {
-            this.isShow = true;
-          }
-          this.contents = res.data.extend.pageInfo;
-          this.content = "";
-          //alert(res.extend.pageInfo.length)
-         /* this.$notify({
+      (this.fullscreenLoading = true),
+        this.$api.getRecipe({ name: this.content }).then((res) => {
+          //console.log(res.data.extend.pageInfo.length)
+          //console.log(res.status)
+          if (res.status === 200) {
+            if (res.data.extend.pageInfo.length > 0) {
+              this.isShow = false;
+            } else {
+              this.isShow = true;
+              this.$message({
+              message: "没有更多了哦~",
+              type: "warning",
+            });
+            }
+            this.contents = res.data.extend.pageInfo;
+            this.content = "";
+            /* this.$notify({
             title: "搜索成功",
             message: "搜索成功",
             type: "success",
           });
           */
-        } else {
-          this.$message({
-            message: "没有更多了哦~",
-            type: "warning",
-          });
-        }
-        
-      });
-      this.fullscreenLoading = false
+          } else {
+            this.$message({
+              message: "没有更多了哦~",
+              type: "warning",
+            });
+          }
+        });
+      this.fullscreenLoading = false;
     },
     goDetails(itemname) {
       this.$router.push({ name: "details", params: { name: itemname } });
     },
   },
   mounted() {
-  /*  if (document.body.scrollTop) {
+    /*  if (document.body.scrollTop) {
       document.body.scrollTop = 0;
     } else {
       document.documentElement.scrollTop = 0;
@@ -162,12 +157,12 @@ export default {
     //如果是首页搜索进来的，页面固定在菜单栏的一定高度，直接显示具体的内容
     if (name) {
       this.search();
-       document.documentElement.scrollTop = 200; 
+      document.documentElement.scrollTop = 200;
     } else {
       //alert("111")
       this.content = "";
       this.search();
-       document.documentElement.scrollTop = 0; 
+      document.documentElement.scrollTop = 0;
     }
   },
 };
@@ -238,7 +233,35 @@ export default {
   width: 100%;
   .search {
     width: 100%;
-    .container {
+    height: 540px;
+    background: url("../../assets/bohe_images/1.png") no-repeat center;
+    img {
+      width: 250px;
+      height: 160px;
+      position: absolute;
+      right: 8%;
+      top: 140px;
+      animation: banner 6s linear infinite;
+    }
+    .title {
+      padding-top: 140px;
+      h2 {
+        font-weight: 100;
+        font-size: 45px;
+        color: #fff;
+        text-align: center;
+      }
+      span {
+        padding-top: 20px;
+        display: block;
+        font-weight: 100;
+        color: #fff;
+        font-size: 22px;
+        text-align: center;
+      }
+    }
+  }
+  .container {
     margin-top: 115px;
     display: flex;
     justify-content: center;
@@ -247,11 +270,10 @@ export default {
       width: 750px;
       height: 40px;
       border-radius: 35px;
-      border: 0.5px solid @primaryColor;
+      border: 0.5px solid #fff;
       padding-left: 25px;
       //background: rgba(rgb(233, 190, 190), 0.6);
-      
-      color: @primaryColor;
+      color: rgb(255, 255, 255);
       font-size: 18px;
       font-weight: 100;
       background: url("../../assets/bohe_images/sousuo.png") no-repeat 0 0;
@@ -259,44 +281,10 @@ export default {
       background-position: 698px;
       //position: relative;
     }
-    input::-webkit-input-placeholder{
-       color: @primaryColor;
-    }
     input:focus {
       outline: none;
     }
   }
-  
-   
-    //height: 540px;
-   // background: url("../../assets/bohe_images/1.png") no-repeat center;
-   /*  img {
-      width: 250px;
-      height: 160px;
-      position: absolute;
-      right: 8%;
-      top: 140px;
-      animation: banner 6s linear infinite;
-    } */
-    /* .title {
-      padding-top: 140px;
-      h2 {
-        font-weight: 100;
-        font-size: 45px;
-        color: @primaryColor;
-        text-align: center;
-      }
-      span {
-        padding-top: 20px;
-        display: block;
-        font-weight: 100;
-        color: @primaryColor;
-        font-size: 22px;
-        text-align: center;
-      }
-    } */
-  }
-  
   //标题
   .title_1 {
     margin-top: 50px;

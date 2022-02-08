@@ -3,7 +3,7 @@
     <div class="search">
       <div class="title">
         <h2>超过50万种食物数据</h2>
-        <span>食物营养查询,吃适合的食物</span>
+        <span>根据食物分类查询,吃适合的食物</span>
       </div>
       <img src="@/assets/bohe_images/bg.png" />
       <div class="haha">
@@ -22,7 +22,7 @@
       </div>
       <div class="restitle_1">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/material' }"
+          <el-breadcrumb-item :to="{ path: '/calorie' }"
             >首页</el-breadcrumb-item
           >
           <el-breadcrumb-item>{{ resname }}</el-breadcrumb-item>
@@ -66,7 +66,7 @@
         </div>
         <div class="data">
           <ul class="data_1">
-            <li v-for="(Resitem, Resindex) in resData" :key="Resindex">
+            <li v-for="(Resitem, Resindex) in resData" :key="Resindex" @click="goDetails(Resitem.name)">
               <div class="data_1_txt" style="cursor: pointer">
                 {{ Resitem.name }}
                 <p>
@@ -87,7 +87,16 @@
                 />
               </div> -->
             </li>
-            <el-pagination background layout="prev, pager, next" :total="100">
+            <!-- 分页 -->
+            <el-pagination
+              background
+              @current-change="pageChange"
+              layout="prev, pager, next"
+              :current-page.sync="page"
+              :total="total_page"
+              :page-size="pageSize"
+              style="position: absolute; top: 780px"
+            >
             </el-pagination>
           </ul>
         </div>
@@ -111,9 +120,12 @@ export default {
   name:'materialSec',
   data() {
     return {
+     total_page: 60,
+      page: 1,
       resname: "",
       resData: "",
       content: "",
+      pageSize: 10,
       contents: [
         {
           picUrl: require("../../../assets/bohe_images/1_1.png"),
@@ -169,19 +181,19 @@ export default {
     };
   },
   methods: {
+    //总搜索函数
     search() {
-        this.$api.getFoodByCat({category:this.content})
-      .then((res) => {
-        this.resData = res.data.extend.pageInfo.list;
-        this.resname = index;
+      this.foodRequest("/api/food/", {
+        category: this.content,
+        pageSize: this.pageSize,
+        pn: this.page,
+      }).then((res) => {
+        this.resData = res.extend.pageInfo.list;
+        this.total_page = parseInt(res.extend.pageInfo.total);
       });
-      this.$notify({
-        title: "搜索成功",
-        message: "搜索成功",
-        type: "success",
-      });
-      this.content = "";
+      //this.content = "";
     },
+    //点击分类及懒加载
     find(index) {
       switch (index) {
         case 0:
@@ -218,13 +230,28 @@ export default {
           index = "";
           break;
       }
-      this.$api.getFoodByCat({
-          category:index
-      })
-      .then((res) => {
-        this.resData = res.data.extend.pageInfo.list;
+      if (this.content != index) {
+        this.page = 1;
+        this.content = index;
         this.resname = index;
-      });
+        this.search();
+      } else {
+        this.$message({
+          message: '别点重复了哟...',
+          type: 'warning'
+        });
+      }
+    },
+    //跳转到食物详情
+    goDetails(detailed) {
+      this.$router.push({ name: "Materialfor", params: { name: detailed } });
+    },
+    //页面变化监听函数
+    pageChange(current) {
+      this.page = current;
+      this.search();
+      //this.pageIn(this.page);
+      //alert(current)
     },
   },
   mounted() {
@@ -451,6 +478,7 @@ export default {
       .el-divider .el-divider--horizontal {
         height: 10px;
       }
+      position: relative;
       .solid {
         height: 38px;
         line-height: 38px;

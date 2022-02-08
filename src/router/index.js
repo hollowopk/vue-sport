@@ -30,6 +30,10 @@ import PrefMessage from '../views/OwnMessage/PrefMessage'
 import ChanMessage from '../views/OwnMessage/ChanMessage'
 import FindMessage from '../views/OwnMessage/FindMessage'
 
+import MaterialThird from '../views/MaterialThird'
+import Materialfor from '../views/Materialfor'
+import Introduce from '../views/Introduce'
+
 import Login from '../views/Login'
 Vue.use(VueRouter)
 
@@ -77,8 +81,19 @@ const routes = [
         path:'product',
         name:'product',
         component:Product,
-      },
-      {
+      },{
+        path: '/materialthird',
+        name: 'MaterialThird',
+        component: MaterialThird
+      }, {
+        path: '/materialfor',
+        name: 'Materialfor',
+        component: Materialfor
+      }, {
+        path: '/introduce',
+        name: 'Introduce',
+        component: Introduce
+      },{
         path:'owndetail',
         name:'owndetail',
         component:OwnDetail,

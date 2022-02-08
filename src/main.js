@@ -5,7 +5,13 @@ import store from './store'
 import './plugins/element.js'
 import api from "./api/index"
 import http from "./api/http"
-import echarts from 'echarts'
+import echarts from './assets/js/echarts'
+
+import { postRequest } from './assets/js/Respone'
+import { putRequest } from './assets/js/Respone'
+import { getRequest } from './assets/js/Respone'
+import { deleteRequest } from './assets/js/Respone'
+import { foodRequest } from './assets/js/Respone'
 
 Vue.prototype.$echarts = echarts
 Vue.prototype.$api = api;
@@ -28,6 +34,14 @@ Vue.prototype.$addStorageEvent = function (key, newVal) {
       }
       return storage.setItem(key, newVal);
   }
+
+
+// 将封装的请求转化为组件的形式引用
+Vue.prototype.postRequest = postRequest
+Vue.prototype.getRequest = getRequest
+Vue.prototype.deleteRequest = deleteRequest
+Vue.prototype.putRequest = putRequest
+Vue.prototype.foodRequest = foodRequest
 
 new Vue({
   router,

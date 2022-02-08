@@ -185,9 +185,9 @@ export default {
       margin: 0 auto;
          width: 180px;
       img {
-        
-        width: 180px;
-        height: 180px;
+        border-radius: 30px;
+        width: 160px;
+        height: 160px;
       }
       .title_0 {
          text-align: left;

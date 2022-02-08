@@ -1,9 +1,9 @@
 <template>
   <div class="box" style="overflow-y: scroll; width: 100%; height: 100%">
-  <!--  <el-backtop target=".box" :button="60"> </el-backtop>-->
-  <el-backtop :visibility-height="clientH - 1000" :bottom="60">
-       <i class="el-icon-caret-top"></i>
-  </el-backtop>
+    <!--  <el-backtop target=".box" :button="60"> </el-backtop>-->
+    <el-backtop :visibility-height="clientH - 1000" :bottom="60">
+      <i class="el-icon-caret-top"></i>
+    </el-backtop>
     <div class="search">
       <div class="title">
         <h2>超过10万种食谱数据</h2>
@@ -17,6 +17,7 @@
           @keyup.enter="search"
           v-model="content"
         />
+        <!-- <img src="@/assets/bohe_images/sousuo.png" alt=""> -->
       </div>
     </div>
     <div class="title_1">
@@ -41,7 +42,7 @@
               <i></i>
               <h4>排毒养颜</h4>
               <p>羹类食物有助于排毒养颜,有延年益寿的功效...</p>
-              <a href="#">了解详情</a>
+              <a @click="goIntroduce()" style="cursor: pointer">了解详情</a>
             </div>
           </li>
           <li>
@@ -51,7 +52,7 @@
               <i></i>
               <h4>清热去火</h4>
               <p>蜂蜜柚子类食物有助于清热解毒，润肠通便的功效...</p>
-              <a href="#">了解详情</a>
+              <a @click="goIntroduce()" style="cursor: pointer">了解详情</a>
             </div>
           </li>
           <li>
@@ -61,7 +62,7 @@
               <i></i>
               <h4>增强免疫</h4>
               <p>鱼类食物有助于补充蛋白质,其眼睛有明目的功效...</p>
-              <a href="#">了解详情</a>
+              <a @click="goIntroduce()" style="cursor: pointer">了解详情</a>
             </div>
           </li>
           <li>
@@ -71,7 +72,7 @@
               <i></i>
               <h4>补血滋阴</h4>
               <p>阿胶类食物有助于补血润燥,补血益气的功效...</p>
-              <a href="#">了解详情</a>
+              <a @click="goIntroduce()" style="cursor: pointer">了解详情</a>
             </div>
           </li>
         </ul>
@@ -84,12 +85,16 @@
     </div>
     <div class="container">
       <ul class="list">
-        <li v-for="(Resitem, Resindex) in contents" :key="Resindex">
+        <li
+          v-for="(Resitem, Resindex) in contents"
+          :key="Resindex"
+          @click="clicked(Resitem.name)"
+        >
           <div class="list_box">
-            <img :src="Resitem.picUrl" alt="" />
+            <img :src="Resitem.avatar" alt="" />
             <div class="list_box_1">
               {{ Resitem.name }}
-              <p>{{ Resitem.describe }}</p>
+              <p>菜谱难度 : {{ Resitem.difficulty }}</p>
             </div>
           </div>
         </li>
@@ -97,7 +102,8 @@
     </div>
     <!--底部第一个组件-->
     <footerTop />
-
+    <!--底部第二个组件-->
+    <footerBottom />
     <div class="card_1">
       <div class="image_1">
         <img :src="card_img" alt="" />
@@ -110,7 +116,7 @@
           可以根据每天的打卡数据，将自己的身体状况可视化
         </p>
         <div class="card_btn_1">
-          <a href="">查看更多</a>
+          <a @click="goMyself" style="cursor: pointer">查看更多</a>
         </div>
       </div>
     </div>
@@ -130,9 +136,6 @@
         <img :src="card_img_1" alt="" />
       </div>
     </div>
-
-    <!--底部第二个组件-->
-    <footerBottom />
   </div>
 </template>
 <script>
@@ -170,48 +173,71 @@ export default {
       card_img_1: require("../../assets/bohe_images/28.png"),
       contents: [
         {
-          picUrl: require("../../assets/bohe_images/10.png"),
-          name: "枸杞燕窝",
-          describe: "有助于美容养颜，适合于女性补充所需营养物质",
+          name: "",
+          avatar: "",
+          difficulty: "",
         },
         {
-          picUrl: require("../../assets/bohe_images/14.png"),
-          name: "黑米黄瓜卷",
-          describe: "含有丰富的维生素，有助于减肥养身",
+          name: "",
+          avatar: "",
+          difficulty: "",
         },
         {
-          picUrl: require("../../assets/bohe_images/12.png"),
-          name: "清蒸鲤鱼",
-          describe: "鱼类食物含有丰富的蛋白质，鱼眼睛可以明目",
+          name: "",
+          avatar: "",
+          difficulty: "",
         },
         {
-          picUrl: require("../../assets/bohe_images/11.png"),
-          name: "蜂蜜柚子茶",
-          describe: "蜂蜜有助于润肠通便，柚子清热去火",
+          name: "",
+          avatar: "",
+          difficulty: "",
         },
         {
-          picUrl: require("../../assets/bohe_images/10.png"),
-          name: "枸杞燕窝",
-          describe: "有助于美容养颜，适合于女性补充所需营养物质",
+          name: "",
+          avatar: "",
+          difficulty: "",
         },
         {
-          picUrl: require("../../assets/bohe_images/14.png"),
-          name: "黑米黄瓜卷",
-          describe: "含有丰富的维生素，有助于减肥养身",
+          name: "",
+          avatar: "",
+          difficulty: "",
         },
       ],
     };
   },
   mounted() {
     this.clientH = document.body.clientHeight;
+    this.recommend();
   },
   methods: {
+    goIntroduce() {
+      this.$router.push("/introduce");
+    },
     goMarterial() {
-      
       this.$router.push("/calorie");
     },
     search() {
       this.$router.push({ name: "menus", params: { name: this.content } });
+    },
+    goMyself(){
+      this.$router.push("/owndetail/timedata")
+    },
+    recommend() {
+      this.getRequest("/api/recipe", "").then((res) => {
+        for (var i = 0; i < res.extend.pageInfo.length; i++) {
+          if (i < 6) {
+            this.contents[i].name = res.extend.pageInfo[i].name;
+            this.contents[i].avatar = res.extend.pageInfo[i].avatar;
+            this.contents[i].difficulty = res.extend.pageInfo[i].difficulty;
+          } else {
+            break;
+          }
+        }
+        console.log(res);
+      });
+    },
+    clicked(message) {
+      this.$router.push({ name: "details", params: { name: message } });
     },
   },
 };
@@ -261,12 +287,11 @@ html,
 body,
 .box {
   height: 100%;
-  .el-backtop{
-       background-color:@primaryColor;
-      .el-icon-caret-top{
-         
-          color:white;
-      }
+  .el-backtop {
+    background-color: @primaryColor;
+    .el-icon-caret-top {
+      color: white;
+    }
   }
 }
 .search {
@@ -453,6 +478,7 @@ body,
   width: 1280px;
   height: auto;
   margin: 0 auto;
+  margin-bottom: 100px;
   .list {
     margin-left: 150px;
     li {
@@ -492,9 +518,9 @@ body,
 }
 
 .card_1 {
-  width: 1300px;
+  width: 1200px;
   height: 480px;
-  margin: 40px auto 0px;
+  margin: 0 auto;
   display: flex;
   .image_1 {
     img {
@@ -532,7 +558,7 @@ body,
   }
 }
 .card_2 {
-  width: 1300px;
+  width: 1200px;
   height: 420px;
   margin: 0 auto;
   display: flex;
@@ -570,12 +596,12 @@ body,
       }
     }
   }
-  ::v-deep{
-      .box{
-          .el-backtop{
-          color:@primaryColor;
+  ::v-deep {
+    .box {
+      .el-backtop {
+        color: @primaryColor;
       }
-      }
+    }
   }
 }
 </style>>
