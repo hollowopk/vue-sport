@@ -282,11 +282,11 @@ export default {
     .cate_nav {
       width: 120px;
       text-align: center;
-      height: 330px;
+     
       top: 180px;
       left: 100px;
       position: fixed;
-      background-color: aqua;
+    
       .list_item {
         display: flex;
         flex-direction: row;

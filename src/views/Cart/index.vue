@@ -42,10 +42,25 @@
         <div class="goods_pri">
             合计(不含运费):<span>{{allPrice}}</span>元
         </div>
-      <el-button size="mini" round>结算</el-button>
+      <el-button size="mini" round @click="handleFuFei">结算</el-button>
        </div>
 
     </div>
+
+    <!--支付弹窗-->
+    <el-dialog
+  title="支付提示"
+  :visible.sync="fufeiDialog"
+  width="30%"
+  center>
+  <span>该功能正在开发......</span>
+  
+    <span slot="footer" class="dialog-footer">
+    <el-button size="mini" @click="fufeiDialog = false">取 消</el-button>
+    <el-button size="mini" type="primary" @click="fufeiDialog = false">确 定</el-button>
+  </span>
+  
+</el-dialog>
   </div>
 </template>
 
@@ -61,8 +76,10 @@ export default {
         goods_price: "", //价格
         num: "", //数量
         all_price: "", //总价
-        opera: "移除收藏夹", //操作
+        opera: "移除购物车", //操作
+       
       },
+       fufeiDialog:false,//付费弹窗
       multipleSelection: [],
       tableData: [],
       data: { key: [] },
@@ -121,6 +138,13 @@ export default {
     },
 
     /**
+     * 商品结算
+     */
+    handleFuFei(){
+      this.fufeiDialog = true;
+    },
+
+    /**
      * 删除某个商品
      */
     deleteCartGoods(){
@@ -162,6 +186,10 @@ export default {
 };
 </script>
 <style scoped lang="less">
+ .el-button--primary{
+    background-color:@primaryColor;
+    color: white;
+  }
 .cart {
   width: 80%;
   margin: 0 auto;

@@ -21,7 +21,8 @@
 
     <div class="tel">
       <span @click="showDialog">
-        <img src="../assets/images/home-select.png" />
+        <img src="../assets/images/打卡.png" />
+        <div>每日打卡</div>
       </span>
       <p>
         <span v-if="JSON.stringify(userMessage) === '{}'" @click="handleLogin"
@@ -280,11 +281,23 @@ export default {
     text-align: right;
     margin-top: 22px;
     cursor: pointer;
-    img {
-      width: 30px;
-      height: 30px;
+    span{
+      float:left;
+  
+      img {
+      width: 20px;
+      height: 20px;
       float: left;
-      margin-right: 20px;
+      margin-left: 40px;
+      margin-right: 40px;
+     margin-top: 8px;
+    }
+    div{
+      font-size: 12px;
+      margin-top: 2px;
+      color: #666;
+      text-align: center;
+    }
     }
     p {
       float: left;
