@@ -47,7 +47,7 @@
  })
  
  // 全局配置
- instance.defaults.baseUrl = "http://localhost:8000";
+ instance.defaults.baseUrl = "http://localhost:8081";
  // instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
  instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
  

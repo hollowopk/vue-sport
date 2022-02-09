@@ -13,7 +13,7 @@ import { getRequest } from './assets/js/Respone'
 import { deleteRequest } from './assets/js/Respone'
 import { foodRequest } from './assets/js/Respone'
 
-Vue.prototype.$echarts = echarts
+Vue.prototype.$echarts = window.echarts //将全局Echarts挂载到Vue原型对象上
 Vue.prototype.$api = api;
 Vue.prototype.$http = http;
 Vue.config.productionTip = false

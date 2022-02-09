@@ -1,21 +1,72 @@
 <template>
     <center>
-        <div id="main" style="width: 800px;height:550px;"></div>
+        <div id="main" style="width: 800px;height:550px;" ref="time_ref"></div>
     </center>
 </template>
 <script>
 import * as echarts from 'echarts';
 export default {
+    data(){
+        return {
+            chartInstance: null,
+            allData: null, //服务器返回的数据
+            timeData:null
+        }
+    },
     mounted(){
-        var myChart = echarts.init(document.getElementById('main'));
+        this.initChart()
+        this.getData()
+        this.handleToadyUserRecode()
+        // this.handleToadyUserRecode()
 
-      // 指定图表的配置项和数据
-        var option = {
-            backgroundColor: '#F5FFFA',
+    //   myChart.setOption(option);
+    },
+    methods:{
+        //初始化Echarts对象
+        initChart(){
+            this.chartInstance = this.$echarts.init(this.$refs.time_ref)
+        },
+        
+        
+        //获取服务器的数据
+
+        async handleToadyUserRecode() {
+            const res = await this.$api.getTodayUserRecode({timeDiff: 0,});
+            this.timeData = res.data.extend.record
+            console.log(res.data.extend.record)
+            this.updataChart()
+        },
+
+        async getData(){
+            const ret = await this.$https.get('seller')
+            this.allData = ret
+            console.log(ret)
+            // this.updataChart()
+        },
+        //更新图表
+        updataChart(){
+            //今日步数数据，改成了消耗热量
+            const timeSteps = this.timeData.map((item)=>{
+                return item.steps
+            })
+            //今日体重数据
+            const timeWeight = this.timeData.map((item)=>{
+                return item.weight
+            })
+            //今日摄入量数据
+            const timeCalorie = this.timeData.map((item)=>{
+                return item.calorie
+            })
+            //今日饮水量数据
+            const timeDrink = this.timeData.map((item)=>{
+                return item.drink
+            })
+            const option = {
+                 backgroundColor: '#F5FFFA',
             series: [
             {
 
-            name: ' 今日步数（步）',
+            name: ' 今日消耗热量',
             type: 'pie',
             radius: ['25%', '30%'],
             center: ['30%', '30%'],
@@ -39,11 +90,11 @@ export default {
                 },
             data: [{
                 value: 75,
-                 name: '今日步数',
+                 name: '今日消耗热量',
                     label: {
                         normal: {
                             
-                            formatter: '今日步数',
+                            formatter: '今日消耗热量',
                             textStyle: {
                                 color: '#000',
                                 fontSize: 16
@@ -57,7 +108,7 @@ export default {
                     label: {
                         normal: {
                             
-                            formatter: '\n\n\n3000',
+                            formatter: '\n\n\n'+ timeSteps,
                             textStyle: {
                                 color: '#007ac6',
                                 fontSize: 20
@@ -71,7 +122,7 @@ export default {
                 name: '%',
                     label: {
                         normal: {
-                            formatter: '\n\n\n\n\n\n步',
+                            formatter: '\n\n\n\n\n\n\n焦',
                             textStyle: {
                                 color: '#000',
                                 fontSize: 16
@@ -122,7 +173,7 @@ export default {
                 name: '%',
                     label: {
                         normal: {
-                            formatter: '\n\n\n150',
+                            formatter: '\n\n\n' + timeWeight,
                             textStyle: {
                                 color: '#007ac6',
                                 fontSize: 20
@@ -136,7 +187,7 @@ export default {
                 name: '%',
                     label: {
                         normal: {
-                            formatter: '\n\n\n\n\n\n斤',
+                            formatter: '\n\n\n\n\n\n\n斤',
                             textStyle: {
                                 color: '#000',
                                 fontSize: 16
@@ -147,7 +198,7 @@ export default {
             }]
         },
         {
-            name: ' 现有门店',
+            name: ' 今日摄入热量',
             type: 'pie',
             radius: ['25%', '30%'],
             center: ['30%', '70%'],
@@ -191,7 +242,7 @@ export default {
                 name: '%',
                     label: {
                         normal: {
-                            formatter: '\n\n\n500',
+                            formatter: '\n\n\n'+ timeCalorie,
                             textStyle: {
                                 color: '#f125ff',
                                 fontSize: 20
@@ -205,7 +256,7 @@ export default {
                 name: '%',
                     label: {
                         normal: {
-                            formatter: '\n\n\n\n\n\n焦',
+                            formatter: '\n\n\n\n\n\n\n焦',
                             textStyle: {
                                 color: '#000',
                                 fontSize: 16
@@ -260,7 +311,7 @@ export default {
                 name: '%',
                     label: {
                         normal: {
-                            formatter: '\n\n\n2879',
+                            formatter: '\n\n\n'+ timeDrink,
                             textStyle: {
                                 color: '#f125ff',
                                 fontSize: 20
@@ -274,7 +325,7 @@ export default {
                 name: '%',
                     label: {
                         normal: {
-                            formatter: '\n\n\n\n\n\nml',
+                            formatter: '\n\n\n\n\n\n\nml',
                             textStyle: {
                                 color: '#000',
                                 fontSize: 16
@@ -287,9 +338,11 @@ export default {
         },
         
     ]
-    
-};
-      myChart.setOption(option);
+            }
+            this.chartInstance.setOption(option)
+        }
+        
     },
+        
 }
 </script>
