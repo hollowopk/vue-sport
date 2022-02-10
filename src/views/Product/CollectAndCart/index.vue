@@ -22,7 +22,7 @@
         </div>
         <div class="own-datail">
           <div class="cart" @click="goCart">购物车</div>
-          <div class="collect">收藏夹</div>
+          <div class="collect" @click="goCollect">收藏夹</div>
           <div class="shezhi">设置</div>
         </div>
       </div>
@@ -81,6 +81,13 @@ export default {
      */
     goCart(){
       this.$router.push("/cart");
+    },
+
+    /**
+     * 跳转至收藏夹
+     */
+    goCollect(){
+        this.$router.push("/collect");
     },
 
     /**
@@ -149,9 +156,15 @@ export default {
           flex: 30%;
           cursor: pointer;
       }
+      .cart:hover{
+        color: @primaryColor;
+      }
       .collect{
           flex: 30%;
            cursor: pointer;
+      }
+      .collect:hover{
+        color: @primaryColor;
       }
       .shezhi{
           flex: 30%;

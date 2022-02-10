@@ -1,7 +1,7 @@
 <template>
-  <div class="cart">
+  <div class="collect">
     <!--返回商城首页-->
-    <el-page-header @back="goBack" content="购物车"> </el-page-header>
+    <el-page-header @back="goBack" content="收藏夹"> </el-page-header>
 
     <!--购物车表-->
     <el-table
@@ -12,42 +12,33 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55"> </el-table-column>
-      <el-table-column label="商品信息" width="500">
+      <el-table-column label="商品信息" width="600">
         <template slot-scope="scope">
-          <div @click="goDetails(scope.row.goods_id)">
-            <div class="iamge">
+         <div @click="goDetails(scope.row.goods_id)">
+              <div class="iamge">
             <img :src="scope.row.goods_small_logo" alt="" />
           </div>
           <div class="intr">
             {{ scope.row.goods_name }}
           </div>
-          </div>
+         </div>
         </template>
       </el-table-column>
-      <el-table-column prop="goods_price" label="单价" width="120">
+      <el-table-column prop="goods_price" label="单价" width="220">
       </el-table-column>
+      <!--
       <el-table-column prop="num" label="数量" show-overflow-tooltip>
       </el-table-column>
       <el-table-column prop="all_price" label="金额" show-overflow-tooltip>
       </el-table-column>
+      -->
       <el-table-column prop="opera" label="操作" show-overflow-tooltip>
            <template slot-scope="scope">
-               <el-button type="text" @click="deleteCartGoods">{{scope.row.opera}}</el-button>
+               <el-button type="text" @click="deleteCollectGoods(scope.row)">{{scope.row.opera}}</el-button>
            </template>
       </el-table-column>
     </el-table>
-    <div  class="handleBuy">
-       <div class="right">
-            <div class="goods_num">
-            已选商品<span>{{allNum}}</span>件
-        </div>
-        <div class="goods_pri">
-            合计(不含运费):<span>{{allPrice}}</span>元
-        </div>
-      <el-button size="mini" round @click="handleFuFei">结算</el-button>
-       </div>
-
-    </div>
+   
 
     <!--支付弹窗-->
     <el-dialog
@@ -68,7 +59,7 @@
 
 <script>
 export default {
-  name: "cart",
+  name: "collect",
   data() {
     return {
       cartData: [],
@@ -79,7 +70,7 @@ export default {
         goods_price: "", //价格
         num: "", //数量
         all_price: "", //总价
-        opera: "移除购物车", //操作
+        opera: "移除收藏夹", //操作
        
       },
        fufeiDialog:false,//付费弹窗
@@ -98,22 +89,25 @@ export default {
   },
   methods: {
     /**
-     * 获取购物车数据
+     * 获取收藏夹数据
      */
 
     handleGetCart() {
-      this.$api.getCart().then((res) => {
+      this.$api.getCollect().then((res) => {
         if (res.status === 200) {
           this.cartData = res.data.extend.list;
           this.getGoodsMessage();
         }
       });
     },
-    /**路由跳转，商品详情 */
-     goDetails(id){
+
+    /**
+     *  商品详情查看
+     */
+    goDetails(id){
        let paramsM= {
             goods_id: id,
-          secondCat: "购物车",
+          secondCat: "收藏夹",
           threeCat: "商品详情",
         };
          this.$router.push({
@@ -121,17 +115,47 @@ export default {
           params: { name: paramsM },
         });
     },
+
     /**
-     * 根据购物车数据获得商品详细信息
+     * 商品移除
+     */
+    deleteCollectGoods(scope){
+        console.log("scope",scope.goods_id);
+        if(scope.goods_id){
+            this.$api.addCollect({
+          goodsid:Number(scope.goods_id),
+          collect:0
+        }).then((res) => {
+          if(res.status === 200){
+           console.log("this.tableData",this.tableData);
+           this.tableData.forEach((item,index) => {
+               if(item.goods_id === scope.goods_id){
+                   this.tableData.splice(index,1);
+               }
+           })
+             this.$message({
+                message:'已取消商品收藏',
+                type:'success'
+              });
+               this.isCollect = false;
+                 this.collectTitle = '收藏该商品';
+          }
+        })
+        }
+    },
+
+
+    /**
+     * 根据收藏夹数据获得商品详细信息
      */
     getGoodsMessage() {
       this.cartData.forEach((item) => {
         if (item) {
-          console.log("item", item);
+          
           this.$http.getGoodsDetail({ goods_id: item.goodid }).then((res) => {
             if (res.status === 200) {
               let data = res.data.message;
-                this.oneData.goods_id = data.goods_id;
+             this.oneData.goods_id = data.goods_id;
               this.oneData.goods_small_logo = data.goods_small_logo;
               this.oneData.goods_name = data.goods_name;
               this.oneData.goods_price = data.goods_price;
@@ -154,37 +178,12 @@ export default {
 
     /**
      * 商品结算
-     *  total_amount:String(this.allPrice),
-      subject:this.multipleSelection[0].goods_id,
-      body:String(this.multipleSelection[0].goods_name)
      */
     handleFuFei(){
-       
-     // this.fufeiDialog = true;
-   /* this.$api.getPay({
-      total_amount:0,
-      subject:0,
-      body:0
-    }).then((res) => {
-      console.log("res",res);
-    })
-    */
+      this.fufeiDialog = true;
     },
 
-    /**
-     * 删除某个商品
-     */
-    deleteCartGoods(){
-      /*    this.$api.addCart({
-            goodsid:Number(this.goodsId),
-            cart:this.buyNum
-          }).then((res) => {
-            if(res.status === 200){
-             
-            }
-          })
-          */
-    },
+    
 
     /**
      * 返回商城首页
@@ -202,8 +201,6 @@ export default {
       }
     },
     handleSelectionChange(val) {
-      this.multipleSelection.push(...val);
-      console.log("value",this.multipleSelection);
         this.allNum = 0;
         this.allPrice = 0;
         val.forEach(item => {
@@ -219,7 +216,7 @@ export default {
     background-color:@primaryColor;
     color: white;
   }
-.cart {
+.collect {
   width: 80%;
   margin: 0 auto;
   margin-top: 40px;
@@ -234,9 +231,9 @@ export default {
       height: 150px;
       line-height: 150px;
       .cell {
-        div{
-          cursor: pointer;
-          .iamge {
+          div{
+              cursor: pointer;
+              .iamge {
           width: 150px;
           height: 100px;
           float: left;
@@ -245,7 +242,9 @@ export default {
             margin: 10px;
           }
         }
-          .intr {
+          }
+        
+        .intr {
               float: left;
               width: 300px;
           margin-top: 20px;
@@ -256,14 +255,9 @@ export default {
             -webkit-box-orient: vertical;
           
         }
-        .intr:hover{
+         .intr:hover{
           color: @primaryColor;
         }
-        }
-        
-        
-        
-      
       }
     }
   }

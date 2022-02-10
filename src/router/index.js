@@ -10,6 +10,7 @@ import ProductCate from '../views/Product/productCate'
 import ProductDetail from '../views/Product/productDetail'
 
 import Cart from '../views/Cart'
+import Collect from '../views/Collect'
 
 import OwnDetail from '../views/OwnDetail'
 import Energy from '../views/OwnDetail/Energy'
@@ -160,6 +161,11 @@ const routes = [
         component:Cart
       },
       
+      {
+        path:'collect',
+        name:'collect',
+        component:Collect
+      },
      
     ]
   },

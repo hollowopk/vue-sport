@@ -23,5 +23,7 @@ const base ={
     addCollect:"/userCart/collectOperation",//商品收藏
     getCollect:'/userCart/showCollect',//收藏商品列表
     getCart:'/userCart/showCart',//购物车列表
+
+    pay:'/pay',//结算
 }
 export default base;

@@ -132,6 +132,14 @@ const api ={
      */
      getCart(){
        return axios.get(base.baseUrl + base.getCart);
+     },
+
+     /**
+      * 结算
+      */
+     getPay(params){
+      return axios.get(base.baseUrl + base.pay +
+        `/${params.total_amount}` + `/${params.subject}` + `/${params.body}`);
      }
 
 
